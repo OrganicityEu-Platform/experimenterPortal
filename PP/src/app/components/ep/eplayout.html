@@ -1,0 +1,67 @@
+<div layout="column">
+    <section layout="row" id="ep">
+        <div id="ep_sidebar">
+            <div>
+                <md-item-content class="label-sb" ng-click="vm.toExperiments()" md-ink-ripple="#EF4070" layout="row" layout-align="start center">
+                    <i class="material-icons">home</i>
+                    <label class="inset">EXPERIMENTS</label>
+                </md-item-content>
+            </div>
+            <div class="accordion-sb">
+                <input type="radio" name="accordion1" id="tools" />
+                <section class="box-sb">
+                    <span layout="row">
+                <i class="material-icons icon-title-sb">build</i>
+                <label class="box-title-sb" for="tools">CO-CREATION TOOLS</label>
+        </span>
+                    <label class="box-close-sb" for="acc-close1"></label>
+                    <div class="box-content-sb">
+                        <a ng-repeat="tool in vm.tools" href="" ng-click="vm.callHref(tool.url)" style="text-decoration:none; color: inherit;">
+                            <md-item-content md-ink-ripple="#EF4070" layout="row" layout-align="start center">
+                                <div class="inset">{{tool.name.toUpperCase()}}</div>
+                            </md-item-content>
+                        </a>
+                    </div>
+                </section>
+                <input type="radio" name="accordion1" id="acc-close1">
+            </div>
+            <div class="label-sb">
+                <a layout="row" href="" ng-click="vm.callHref(vm.docref)" style="text-decoration:none; color: inherit;">
+                    <md-item-content md-ink-ripple="#EF4070" layout="row" layout-align="start center">
+                        <i class="material-icons">info_outline</i>
+                        <label class="inset">DOCUMENTATION</label>
+                    </md-item-content>
+                </a>
+            </div>
+            <div class="accordion-sb">
+                <input type="radio" name="accordion2" id="help" />
+                <section class="box-sb">
+            <span layout="row">
+                <i class="material-icons icon-title-sb">help_outline</i>
+                <label class="box-title-sb" for="help">SUPPORT</label>
+            </span>
+                    <label class="box-close-sb" for="acc-close2"></label>
+                    <div class="box-content-sb">
+                        <a href="" ng-click="vm.callHref(vm.zoho)" style="text-decoration:none; color: inherit;">
+                            <md-item-content md-ink-ripple="#EF4070" layout="row" layout-align="start center">
+                                <div class="inset">FAQ</div>
+                            </md-item-content>
+                        </a>
+                        <a href="" ng-click="vm.callHref(vm.github)" style="text-decoration:none; color: inherit;">
+                            <md-item-content md-ink-ripple="#EF4070" layout="row" layout-align="start center">
+                                <div class="inset">GITHUB</div>
+                            </md-item-content>
+                        </a>
+                        <a href="" ng-click="vm.callHref(vm.googlegroups)" style="text-decoration:none; color: inherit;">
+                            <md-item-content md-ink-ripple="#EF4070" layout="row" layout-align="start center">
+                                <div class="inset">GOOGLE GROUPS</div>
+                            </md-item-content>
+                        </a>
+                    </div>
+                </section>
+                <input type="radio" name="accordion2" id="acc-close2">
+            </div>
+        </div>
+        <div ui-view="content" id="ep_content"></div>
+    </section>
+</div>

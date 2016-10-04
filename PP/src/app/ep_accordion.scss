@@ -1,0 +1,87 @@
+.accordion input {
+    display: none;
+}
+
+.box {
+    position: relative;
+    background: white;
+    height: 40px;
+    transition: all .15s ease-in-out;
+    cursor: pointer;
+    i {
+        transform: translate(0, -5px);
+    }
+}
+
+.box::before {
+    content: '';
+    position: absolute;
+    display: block;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    pointer: default;
+    pointer-events: none;
+    box-shadow: 0 -1px 0 #e5e5e5, 0 0 2px rgba(0, 0, 0, .12), 0 2px 4px rgba(0, 0, 0, .24);
+}
+
+header.box {
+    background: white;
+    z-index: 100;
+    height: 40px;
+    cursor: initial;
+    box-shadow: 0 -1px 0 #e5e5e5, 0 0 2px -2px rgba(0, 0, 0, .12), 0 2px 4px -4px rgba(0, 0, 0, .24);
+}
+
+header .box-title {
+    margin: 0;
+    font-size: 14pt;
+    color: $organicity_pink;
+    cursor: initial;
+}
+
+.box-title {
+    width: calc(100% - 40px);
+    height: 40px;
+    transform: translate(0, -12px);
+    line-height: 64px;
+    padding: 0 20px;
+    display: inline-block;
+    color: $ep_blue;
+    cursor: pointer;
+}
+
+.box-content {
+    width: calc(100% - 40px);
+    padding: 0px 20px;
+    //color: $ep_blue;
+    display: none;
+}
+
+.tags-sel {
+    .md-fab {
+        float: right;
+    }
+}
+
+.box-close {
+    position: absolute;
+    height: 40px;
+    width: 100%;
+    top: 0;
+    left: 0;
+    cursor: pointer;
+    display: none;
+}
+
+input:checked + .box {
+    height: auto;
+    margin: 8px 0px;
+    box-shadow: 0 0 6px rgba(0, 0, 0, .16), 0 6px 12px rgba(0, 0, 0, .32);
+}
+
+input:checked + .box .box-content,
+input:checked + .box .box-close {
+    display: inline-block;
+}

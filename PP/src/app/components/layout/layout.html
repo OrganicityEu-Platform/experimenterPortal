@@ -1,0 +1,20 @@
+<div id="ep_navBar" class="navbar_container">
+    <md-toolbar layout="row" layout-align="end center" class="toolbar">
+        <md-icon aria-label="" md-svg-src="./assets/ep/organicity.svg"></md-icon>
+        <section layout="row">
+            <div ng-if="!vm.isLoggedin()" aria-label="">
+                <md-button style="color: white;" ng-click="vm.login()">
+                    Log In
+                </md-button>
+            </div>
+            <div ng-if=" vm.isLoggedin()" layout="row " aria-label="">
+                <p style="margin-right:10px; color: white; font-size: small; font-weight: bold;">{{vm.hello}}</p>
+                <md-button style="color: white;" ng-click="vm.logout() ">
+                    Log Out
+                </md-button>
+            </div>
+        </section>
+    </md-toolbar>
+</div>
+<div ui-view></div>
+<footer layout="column " class="ep_footer " ng-include=" 'app/components/footer/footer.html' " layout="row " layout-align="center center "></footer>
