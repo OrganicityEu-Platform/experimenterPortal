@@ -1,0 +1,113 @@
+<div>
+    <md-progress-circular ng-show="vm.loadingChart" class="md-hue-3 chart_spinner" md-mode="indeterminate"></md-progress-circular>
+</div>
+<div id="assetEdit" layout="row">
+    <div id="editArea">
+        <!-- General asset stuff -->
+        <div ng-show=" vm.editState === 'onAsset'">
+        <div layout="row">
+            <h2>Asset Creation</h2>
+            <i class="material-icons" style="color:green;cursor:pointer;margin-left:20px" ng-click="vm.showInfo()">info</i>
+        </div>
+            <md-input-container class="md-block">
+                <label>Asset Name</label>
+                <input ng-change="vm.editId()" name="assetName" required ng-model="vm.name">
+                <div ng-messages="assetName.$error">
+                <div ng-message="required">Name is required</div>
+                </div>
+            </md-input-container>
+            <md-input-container class="md-block">
+                <label>Asset Type</label>
+                <input ng-change="vm.editType()" name="assetType" required ng-model="vm.type">
+            </md-input-container>
+            <md-select placeholder="Selectec from existing Asset Types" ng-model="vm.asset.type">
+                <md-option ng-value="attr" ng-repeat="assettype in vm.assetTypes">{{assettype.name}}</md-option>
+            </md-select>
+            <br>
+            <br>
+            <md-button class="md-flat md-secondary" ng-click="vm.addAttr()"> Add Attribute </md-button>
+            <br>
+            <br>
+            <md-button style="float:left " class="md-flat md-primary " ng-click="vm.cancel() "> Cancel </md-button>
+            <md-button style="float:right " class="md-flat md-primary " ng-disabled="!vm.canCreate()" ng-click="vm.finish() "> Create Asset </md-button>
+        </div>
+        <!-- Attribute creation -->
+        <div ng-show=" vm.editState === 'onAttribute'">
+            <h2>Attributes addition</h2>
+            <md-radio-group ng-model="vm.attrOpt" layout="row" ng-init=" vm.attrOpt = 'legacy'">
+                <md-radio-button value="legacy" class="md-primary" ng-click="vm.radioClick()">Existing Attributes</md-radio-button>
+                <md-radio-button value="custom" class="md-primary" ng-click="vm.radioClick()">Custom</md-radio-button>
+            </md-radio-group>
+            <md-input-container class="md-block">
+                <label>Name</label>
+                <input required ng-model="vm.newAttribute.name">
+            </md-input-container>
+            <md-input-container class="md-block">
+                <label>Value</label>
+                <input ng-model="vm.newAttribute.value">
+            </md-input-container>
+            <md-select ng-show="vm.attrOpt === 'legacy'" placeholder="Selectec from existing Attribute Types" ng-model="vm.foo">
+                <md-option ng-value="foo" ng-repeat="attr in vm.attributeTypes" ng-click="vm.attrSel(attr)">{{attr.name}}</md-option>
+            </md-select>
+            <div class="optInput" ng-show=" vm.attrOpt==='custom' " layout="column">
+                <md-input-container class="md-block ">
+                    <label>Type</label>
+                    <input name="newAttrType " required ng-model="vm.newAttribute.type ">
+                </md-input-container>
+            </div>
+            <br>
+            <br>
+            <md-button ng-show=" vm.attrOpt==='custom' " class="md-flat md-secondary" ng-click="vm.addMeta()"> Add Metadata </md-button>
+            <br>
+            <br>
+            <json-formatter json="vm.newAttribute " open="10"></json-formatter>
+            <br>
+            <br>
+            <span style="width:100%">
+    <md-button style="float:left" class="md-flat md-primary" ng-click="vm.attrCancel()"> Cancel </md-button>
+    <md-button style="float:right" class="md-flat md-primary" 
+    ng-disabled="vm.newAttribute.name === '' || vm.newAttribute.type === ''" ng-click="vm.attrDone()"> Add Attribute </md-button>
+    </span>
+        </div>
+        <!-- Metadata edition here -->
+        <div ng-show=" vm.editState==='onMeta'">
+            <h2>Metadata addition</h2>
+            <div class="optInput" layout="column">
+                <md-input-container class="md-block ">
+                    <label>Name</label>
+                    <md-input ng-model="vm.newMeta.name ">
+                </md-input-container>
+                <md-select ng-show="vm.newMeta.name === 'unit'" placeholder="Select from existing defined units" ng-model="vm.foo">
+                    <md-option ng-value="foo" ng-repeat="unit in vm.unitTypes" ng-click="vm.metaSel(unit)">{{unit.name}}</md-option>
+                </md-select>
+                <md-select ng-show="vm.newMeta.name === 'dataType'" placeholder="Select from existing defined data types" ng-model="vm.foo">
+                    <md-option ng-value="foo" ng-repeat="datatype in vm.dataTypes" ng-click="vm.metaSel(datatype)">{{datatype.name}}</md-option>
+                </md-select>
+            </div>
+            <md-input-container class="md-block ">
+                <label>Type</label>
+                <input name="newAttrValue " required ng-model="vm.newMeta.type ">
+            </md-input-container>
+            <md-input-container class="md-block ">
+                <label>Value</label>
+                <input name="newAttrValue " required ng-model="vm.newMeta.value ">
+            </md-input-container>
+            <br>
+            <br>
+            <json-formatter json="vm.newMeta" open="10"></json-formatter>
+            <br>
+            <br>
+            <span style="width:100% ">
+    <md-button style="float:left " class="md-flat md-primary " ng-click="vm.metaCancel() "> Cancel </md-button>
+    <md-button style="float:right " class="md-flat md-primary " ng-click="vm.metaDone() "> Add Metadata </md-button>
+    </span>
+        </div>
+    </div>
+    <!-- <div layout="column">
+        <label class="ep_pLabel">Headers </label>        
+        <div id="jsonEditor" ng-jsoneditor ng-model="vm.headers" options="vm.options"></div>
+        <label class="ep_pLabel">Body </label>        
+        <div id="jsonEditor" ng-jsoneditor ng-model="vm.asset" options="vm.options"></div>
+    </div> -->
+    <div class="jsonEditor" ng-jsoneditor ng-model="vm.asset" options="vm.options"></div>
+</div>

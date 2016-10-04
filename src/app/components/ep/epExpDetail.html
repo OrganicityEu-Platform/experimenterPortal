@@ -1,0 +1,50 @@
+<md-tabs md-stretch-tabs="always" md-center-tabs="true">
+    <md-tab label>
+        <md-tab-label>
+            <md-icon md-svg-src="./assets/ep/information.svg"></md-icon>
+            <span style="margin-left:10px;">   INFORMATION</span>
+        </md-tab-label>
+        <md-tab-body>
+            <div class="ep_tabBody" ui-view="experimentInfo"></div>
+        </md-tab-body>
+    </md-tab>
+    <md-tab label>
+        <md-tab-label>
+            <md-icon md-svg-src="./assets/ep/assets.svg"></md-icon>
+            <span style="margin-left:10px;">ASSETS</span>
+        </md-tab-label>
+        <md-tab-body>
+            <div class="ep_tabBody" ui-view="exp_assets"></div>
+        </md-tab-body>
+        <!--md-tabs md-stretch-tabs="always">
+            <md-tab label="EXPERIMENT ASSETS">
+                <md-tab-body>
+                    <div class="ep_tabBody" ui-view="exp_assets"></div>
+                </md-tab-body>
+            </md-tab>
+            <md-tab label="SELECTED ASSETS ">
+                <md-tab-body>
+                    <div class="ep_tabBody" ui-view="sel_assets"></div>
+                </md-tab-body>
+            </md-tab>
+        </md-tabs-->
+    </md-tab>
+    <md-tab label>
+        <md-tab-label>
+            <md-icon md-svg-src="./assets/ep/apps.svg "></md-icon>
+            <span style="margin-left:10px;">   APPS</span>
+        </md-tab-label>
+        <md-tab-body>
+            <div class="ep_tabBody " ui-view="apps "></div>
+        </md-tab-body>
+    </md-tab>
+    <md-tab label>
+        <md-tab-label>
+            <md-icon md-svg-src="./assets/ep/community.svg "></md-icon>
+            <span>COMMUNITY</span>
+        </md-tab-label>
+        <md-tab-body>
+            <div class="ep_tabBody " ui-view="exp_community"></div>
+        </md-tab-body>
+    </md-tab>
+</md-tabs>

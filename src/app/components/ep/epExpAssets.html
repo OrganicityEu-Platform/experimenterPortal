@@ -1,0 +1,41 @@
+<md-content layout-padding>
+    <div>
+        <md-progress-circular ng-show="vm.loadingChart" class="md-hue-3 chart_spinner" md-mode="indeterminate"></md-progress-circular>
+    </div>
+    <div class="static_info">
+        <h3 class="ep_bBoldLabel">List of assets created within your experiment</h3>
+        <br>
+        <md-button class="md-flat md-primary" ng-disabled="!vm.editionEnabled" ng-click="vm.addDev()">
+            Create Experiment Asset
+        </md-button>
+    </div>
+    <div ng-show="vm.showErrorLoad">
+        <br>
+        <br>
+        <h4 style="color:red;">The experiment assets could not be loaded. Please, try again in some minutes.</h4>
+        <br>
+        <br>
+    </div>
+    <br>
+    <br>
+    <div ng-show="!vm.showErrorLoad">
+        <table datatable="ng" dt-options="vm.dtOptions" dt-column-defs="vm.dtColumnDefs" class="row-border hover">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>TYPE</th>
+                    <th>Num. Attributes</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr ng-repeat="asset in vm.assets " style="cursor:pointer; " ng-click="vm.assetClick(asset) ">
+                    <td align="left ">{{ asset.id }}</td>
+                    <td align="center ">{{ asset.type }}</td>
+                    <td align="center ">{{ asset.attributes.length }}</td>
+                    <td align="center "><i style="color:blue; " class="material-icons ">info</i></td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+    <md-content>

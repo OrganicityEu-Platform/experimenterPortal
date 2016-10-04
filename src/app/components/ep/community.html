@@ -1,0 +1,61 @@
+<div>
+    <md-progress-circular ng-show="vm.loadingChart" class="md-hue-3 chart_spinner" md-mode="indeterminate"></md-progress-circular>
+</div>
+<md-content layout-padding>
+    <md-button ng-show="!vm.newInvitation" class="md-flat md-primary" ng-click="vm.createInv()">
+            Create new invitation
+    </md-button>
+
+    <div ng-show="vm.newInvitation">
+        <form name="vm.newInvForm" novalidate style="width:100%">
+        <md-input-container class="md-block">
+            <label>Participants emails</label>
+            <input name="email" required ng-model="vm.invitationEmails">
+            <div ng-messages="!vm.newInvForm.email.$pristine && vm.newInvForm.email.$error">
+                <div ng-message="required">Emails are required</div>
+            </div>
+        </md-input-container>
+        <!--md-input-container class="md-block">
+            <label>Message</label>
+            <textarea md-maxlength="2000" ng-trim="true" name="message" required ng-model="vm.message"></textarea>
+            <div ng-messages="!vm.newInvForm.message.$pristine && vm.newInvForm.message.$error">
+                <div ng-message="md-maxlength">Message is limited to 2000 characters</div>
+            </div>
+        </md-input-container-->
+        <md-button class="md-flat md-primary" ng-click="vm.cancel()" style="float:left"> Cancel </md-button>
+        <md-button class="md-flat md-primary" ng-click="vm.send()" style="float:right"> Send </md-button>
+    </form>
+    </div>
+
+    <div ng-show="vm.showErrorLoad">
+        <br>
+        <br>
+        <h4 style="color:red;">The experiment invitations could not be loaded. Please, try again in some minutes.</h4>
+        <br>
+        <br>
+    </div>
+
+    <div ng-show="!vm.newInvitation && !vm.showErrorLoad">
+    <h3 class="ep_bBoldLabel">List of invitations pending a response</h3>
+    <table datatable="ng" dt-options="vm.dtOptions" dt-column-defs="vm.dtColumnDefs" class="hover">
+    <thead>
+        <tr>
+            <th>Email</th>
+            <th>Status</th>
+            <th>Invitation Date</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr ng-repeat="invitation in vm.invitations">
+            <td align="center" >{{ invitation.email.toUpperCase() }}</td>
+            <td align="center" >{{ invitation.state.toUpperCase() }}</td>
+            <td align="center" >{{ vm.readableDate(invitation.date) }}</td>
+        </tr>
+    </tbody>
+    </table>
+    </div>
+
+
+
+
+</md-content>

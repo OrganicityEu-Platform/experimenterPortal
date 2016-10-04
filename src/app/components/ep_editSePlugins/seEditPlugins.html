@@ -1,0 +1,33 @@
+<md-content layout-padding>
+    <table datatable="ng" dt-options="vm.dtOptions" dt-colum-defs="vm.dtColumnDefs" class="row-border hover">
+        <thead>
+            <tr>
+                <th align="left">Sensor Image</th>
+                <th align="left">Sensor Id</th>
+                <th align="left">Sensor Name</th>
+                <th align="left">Sensor Description</th>
+                <th align="left">Select Sensor</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr ng-repeat="plugin in vm.plugins">
+                <td>
+                    <img ng-src="{{plugin.imageUrl}}" alt="Description" width="30pt" />
+                </td>
+                <td>{{plugin.id}}</td>
+                <td>{{plugin.name}}</td>
+                <td>{{plugin.description}}</td>
+                <td>
+                    <md-checkbox ng-model="plugin.selected" aria-label="">
+                    </md-checkbox>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <br>
+    <br>
+    <span style="width:100%">
+    <md-button style="float:left" class="md-flat md-primary" ng-click="vm.cancel()"> Cancel </md-button>
+    <md-button style="float:right" class="md-flat md-primary" ng-click="vm.create()"> Proceed </md-button>
+    </span>
+</md-content>

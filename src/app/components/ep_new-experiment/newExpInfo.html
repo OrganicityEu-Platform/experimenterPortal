@@ -1,0 +1,55 @@
+<md-content layout-padding>
+
+    <div layout="row">
+    <h2>Experiment Creation - General Information</h2>
+    <i class="material-icons" style="color:green;cursor:pointer;margin-left: 20px;" ng-click="vm.showInfo()">info</i>
+</div>
+    <form name="vm.newExpForm" novalidate style="width:100%">
+        <md-input-container class="md-block">
+            <label>Experiment Name</label>
+            <input md-maxlength="40" name="name" required ng-model="vm.name">
+            <div ng-messages="vm.newExpForm.name.$error">
+                <div ng-message="md-maxlength">Name is limited to 40 characters</div>
+                <div ng-message="required">Name is required</div>
+            </div>
+        </md-input-container>
+        <md-input-container class="md-block">
+            <label>Description</label>
+            <textarea md-maxlength="2000" ng-trim="true" name="description" required ng-model="vm.description"></textarea>
+            <div ng-messages="vm.newExpForm.description.$error">
+                <div ng-message="md-maxlength">Description is limited to 2000 characters</div>
+                <div ng-message="required">Description is required</div>
+            </div>
+        </md-input-container>
+        <div layout="row">
+        <md-checkbox ng-model="vm.assetsPublic" aria-label="Are Experiment Assets Public?">
+            Are experiment Assets Public? {{vm.assetsPublic}}
+        </md-checkbox>
+        <i class="material-icons" style="color:blue;cursor:pointer;margin-top:10px; margin-left: 20px;" ng-click="vm.showInfoAssets()">info</i>
+        </div>
+       <p ng-show="vm.infoAssets" class="ep_info">By selecting this option the assets created by this experiment will be visible for everyone,
+                otherwise only this experiment, and their applications, will be allowed to use them. </p>
+        <span layout="row">
+        <md-input-container class="md-block" style="width:300px; margin-right:20px;">
+            <label ng-if="vm.browser==='firefox'">Start Date (yyyy-mm-dd)</label>
+            <label ng-if="vm.browser!=='firefox'">Start Date</label>
+            <input name="startDate" type="date" required ng-model="vm.startDate" />
+            <div ng-messages="vm.newExpForm.startDate.$error">
+                <div ng-message="required">Start date is required</div>
+            </div>
+        </md-input-container>
+        <md-input-container class="md-block" style="width:300px; margin-right:20px;">
+            <label ng-if="vm.browser==='firefox'">End Date (yyyy-mm-dd)</label>
+            <label ng-if="vm.browser!=='firefox'">End Date</label>
+            <input name="endDate" type="date" required ng-model="vm.endDate" min="{{vm.startDate}}" />
+            <div ng-messages="vm.newExpForm.endDate.$error">
+                <div ng-message="min">The experiment cannot finish before starting</div>
+                <div ng-message="required">End date is required</div>
+            </div>
+        </md-input-container>
+
+    </span>
+    </form>
+    <md-button class="md-flat md-primary" ng-click="vm.cancel()" style="float:left"> Cancel </md-button>
+    <md-button class="md-flat md-primary" ng-disabled="vm.newExpForm.$invalid" ng-click="vm.continue()" style="float:right"> Continue </md-button>
+</md-content>

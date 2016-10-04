@@ -1,0 +1,56 @@
+<md-content layout-padding>
+    <div class="accordion">
+        <header class="box">
+            <label class="box-title">Available tag domains</label>
+        </header>
+        <div ng-repeat="domain in vm.domains">
+            <input type="radio" name="accordion" id="domain-{{$index}}" />
+            <section class="box">
+                <label class="box-title" ng-click="vm.openAll($index)" for="domain-{{$index}}">{{domain.urn}}</label>
+                <i class="material-icons" ng-show="!vm.isOpenAll($index)">keyboard_arrow_right</i>
+                <i class="material-icons" ng-show="vm.isOpenAll($index)">keyboard_arrow_down</i>
+                <label class="box-close" ng-click="vm.openAll($index)" for="acc-close"></label>
+                <div class="box-content  tags-sel" style="cursor:default">
+                    <br> {{domain.description}}
+                    <br>
+                    <tag-list ng-model="domain.tags" key="name"> </tag-list>
+                    <md-button class="md-flat" style="float:right;" ng-click="vm.domainClick(domain)" layout="row">
+                        <label>Select</label>
+                    </md-button>
+                </div>
+            </section>
+        </div>
+        <input type="radio" name="accordion" id="acc-close">
+    </div>
+    <br>
+    <br>
+    <div class="accordion">
+        <header class="box">
+            <label class="box-title">Selected tag domains</label>
+        </header>
+        <div ng-repeat="domain in vm.selectedDomains">
+            <input type="radio" name="accordion" id="selDomain-{{$index}}" />
+            <section class="box">
+                <label class="box-title" ng-click="vm.openSel($index)" for="selDomain-{{$index}}">{{domain.urn}}</label>
+                <i class="material-icons" ng-show="!vm.isOpenSel($index)">keyboard_arrow_right</i>
+                <i class="material-icons" ng-show="vm.isOpenSel($index)">keyboard_arrow_down</i>
+                <label class="box-close" ng-click="vm.openSel($index)" for="acc-close"></label>
+                <div class="box-content  tags-sel" style="cursor:default">
+                    <br> {{domain.description}}
+                    <br>
+                    <tag-list ng-model="domain.tags" key="name"> </tag-list>
+                    <md-button class="md-flat" style="float:right;" ng-click="vm.selectedDomainClick(domain)">
+                        <label>Unselect</label>
+                    </md-button>
+                </div>
+            </section>
+        </div>
+        <input type="radio" name="accordion" id="acc-close">
+    </div>
+    <br>
+    <br>
+    <span style="width:100%">
+    <md-button style="float:left" class="md-flat md-primary" ng-click="vm.cancel()"> Cancel </md-button>
+    <md-button style="float:right" class="md-flat md-primary" ng-click="vm.done()"> Done </md-button>
+    </span>
+</md-content>

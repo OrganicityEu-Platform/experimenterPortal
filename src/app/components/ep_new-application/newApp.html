@@ -1,0 +1,58 @@
+<div>
+    <md-progress-circular ng-show="vm.loadingChart" class="md-hue-3 chart_spinner" md-mode="indeterminate"></md-progress-circular>
+</div>
+<md-content layout-padding>
+    <h2>NEW APPLICATION</h2>
+    <form name="vm.newAppForm" novalidate style="width:100%">
+        <md-input-container class="md-block">
+            <label>Application Name</label>
+            <input md-maxlength="40" name="name" required ng-model="vm.appInfo.name">
+            <div ng-messages="vm.newAppForm.name.$error">
+                <div ng-message="md-maxlength">Name is limited to 40 characters</div>
+                <div ng-message="required">Name is required</div>
+            </div>
+        </md-input-container>
+        <md-input-container class="md-block">
+            <label>Description</label>
+            <textarea md-maxlength="2000" ng-trim="true" name="description" required ng-model="vm.appInfo.description"></textarea>
+            <div ng-messages="vm.newAppForm.description.$error">
+                <div ng-message="md-maxlength">Description is limited to 2000 characters</div>
+                <div ng-message="required">Description is required</div>
+            </div>
+        </md-input-container>
+        <md-input-container class="md-block">
+            <label>Application end-point</label>
+            <input type="url" required name="link" ng-model="vm.appInfo.link">
+            <div ng-messages="vm.newAppForm.link.$error">
+                <div ng-message="required">End-point is required</div>
+                <div ng-message="url">Not valid url</div>
+            </div>
+        </md-input-container>
+        <div flex>
+            <md-select name="type" required placeholder="Application Type" ng-model="vm.appInfo.type">
+                <md-option ng-repeat="app in vm.appTypes" value="{{app.name}}">{{app.name}} </md-option>
+            </md-select>
+            <md-input-container class="md-block">
+                <div ng-messages="vm.newAppForm.type.$error">
+                    <div ng-message="required" style="color:red;">Pick one</div>
+                </div>
+            </md-input-container>
+        </div>
+        <div ng-show="vm.isSe()">
+            <md-input-container class="md-block">
+                <label>URL Description</label>
+                <input type="url" name="urldescription" ng-model="vm.appInfo.more.urlDescription">
+                <div ng-if="!vm.newAppForm.urldescription.$pristine" ng-messages="vm.newAppForm.urldescription.$error">
+                    <div ng-message="url">Not valid url</div>
+                </div>
+            </md-input-container>
+            <br>
+            <br>
+            <md-button class="md-flat md-secondary" ng-click="vm.selectPlugins() "> SELECT PLUGINS </md-button>
+        </div>
+    </form>
+    <br>
+    <br>
+    <md-button class="md-flat md-primary" ng-click="vm.cancel()" style="float:left"> Cancel </md-button>
+    <md-button class="md-flat md-primary" ng-disabled="vm.newAppForm.$invalid" ng-click="vm.create()" style="float:right"> Create </md-button>
+</md-content>

@@ -1,0 +1,21 @@
+<md-backdrop ng-if="vm.entityWithoutData" class="md-noDataBackdrop">
+  <div class="block" layout="column" layout-align="center center">
+    <div ng-if="vm.user === 'visitor'">
+      <h2 class="title">
+        This resource has no data available
+      </h2>
+      <p class="message">
+        <a analytics-on="click" analytics-event="click"
+          analytics-category="Offline entity Comment Link"
+          href="#disqus_thread">Leave a commment</a>
+        below to let its provider know you are interest
+      </p>
+    </div>
+    <div ng-if="vm.user === 'owner'">
+      <h2 class="title">
+        This resource has still not posted any data 🔧🔩🔨
+      </h2>
+      <p class="message">Please, <a href="#disqus_thread">check again the resouce</a> or reach the support team.</p>
+    </div>
+  </div>
+</md-backdrop>

@@ -1,0 +1,35 @@
+<md-button class="md-flat md-primary" ng-click="vm.NewExperiment()">
+    New Experiment
+</md-button>
+<br>
+<br>
+<div>
+    <md-progress-circular ng-show="vm.loadingChart" class="md-hue-3 chart_spinner" md-mode="indeterminate"></md-progress-circular>
+</div>
+<table datatable="ng" dt-options="vm.dtOptions" dt-column-defs="vm.dtColumnDefs" class="hover">
+    <thead>
+        <tr>
+            <th></th>
+            <th>Name</th>
+            <th>Description</th>
+            <th> </th>
+            <th>State</th>
+            <th>Remove</th>
+            <th>Leave</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr ng-repeat="experiment in vm.experiments">
+            <td> <img ng-src="{{vm.getIcon(experiment)}}" width="30px" alt="logo" /></td>
+            <td align="center" class="selectCell" width="10%" ng-click="vm.detail(experiment)">{{ experiment.name.toUpperCase() }}</td>
+            <td class="selectCell" width="70%" ng-click="vm.detail(experiment)">{{ vm.ShortDescription(experiment.description) }}</td>
+            <td align="center" ng-click="vm.detail(experiment)"><i class="material-icons" style="color:blue;cursor:pointer;">info</i></td>
+            <td align="center" width="10%" class="exp_status">
+                <md-button ng-click="vm.ChangeStatus(experiment)" ng-show="experiment.status === 'stopped'" style="background-color:red;border-radius: 10px; font-weight: bold;">STOPPED</md-button>
+                <md-button ng-click="vm.ChangeStatus(experiment)" ng-show="experiment.status === 'running'" style="background-color:green;border-radius: 10px;font-weight: bold;">RUNNING</md-button>
+            </td>
+            <td> <i ng-show="experiment.mainExperimenterId===vm.currentExperimenterId" ng-click="vm.confirmRemove($event, experiment)" style="cursor:pointer" class="material-icons">delete</i></td>
+            <td> <i ng-show="experiment.mainExperimenterId!==vm.currentExperimenterId" ng-click="vm.confirmLeave($event, experiment)" style="cursor:pointer" class="material-icons">cancel</i></td>
+        </tr>
+    </tbody>
+</table>

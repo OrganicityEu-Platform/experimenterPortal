@@ -1,0 +1,45 @@
+<div>
+    <md-progress-circular ng-show="vm.loadingChart" class="md-hue-3 chart_spinner" md-mode="indeterminate"></md-progress-circular>
+</div>
+<br>
+<br>
+<table datatable="ng" dt-options="vm.dtOptions" dt-column-defs="vm.dtColumnDefs" class="hover">
+    <thead>
+        <tr>
+            <th>Experiment Name</th>
+            <th>Invitation Date</th>
+            <th>Experiment Description</th>
+            <th></th>
+            <th>State</th>
+            <th>Accept</th>
+            <th>Reject</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr ng-repeat="inv in vm.invs">
+            <td align="center" width="10%" ng-click="vm.showInfo(invt)">{{ inv.name.toUpperCase() }}</td>
+            <td class="selectCell" width="10%" ng-click="vm.showInfo(inv)">{{ vm.getDate(inv.date)}}</td>
+            <td class="selectCell" width="40%" ng-click="vm.showInfo(inv)">{{ vm.shortDescription(inv.description)}}</td>
+            <td align="center" ng-click="vm.showInfo(inv)"><i class="material-icons" style="color:blue;cursor:pointer;">info</i></td>
+            <td align="center" width="10%" class="exp_status">{{inv.state.toUpperCase()}}</td>
+
+
+            <td align="center" >
+              <div ng-show="inv.state==='pending'">
+                <i ng-if="vm.isAccepted(inv)" class="material-icons" style="color:red;cursor:pointer;" ng-click="vm.accept(inv)">done</i>
+                <i ng-if="!vm.isAccepted(inv)" class="material-icons" style="color:black;cursor:pointer;" ng-click="vm.accept(inv)">done</i>
+              </div>
+            </td>
+            <td align="center" ng-click="vm.reject(inv)">
+              <div ng-show="inv.state==='pending'">
+                <i ng-if="vm.isRejected(inv)" class="material-icons" style="color:red;cursor:pointer;" ng-click="vm.reject(inv)">clear</i>
+                <i ng-if="!vm.isRejected(inv)" class="material-icons" style="color:bacl;cursor:pointer;" ng-click="vm.reject(inv)">clear</i>
+              </div>
+            </td>
+            
+        </tr>
+    </tbody>
+</table>
+<br>
+<br>
+<md-button style="float:left" class="md-flat md-primary" ng-click="vm.update()"> Update </md-button>
