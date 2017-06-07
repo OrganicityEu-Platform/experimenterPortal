@@ -1,6 +1,5 @@
 'use strict';
 
-
 angular.module('app', [
     'ngFileUpload',
     'ngMaterial',
@@ -8,10 +7,9 @@ angular.module('app', [
     'restangular',
     'angularSpinner',
     'ngDropdowns',
-    //'oauth',
-    'leaflet-directive',
-    'app.components',
     'angular-jwt',
+    'ui-leaflet',
+    'app.components',
     'angularLoad',
     'angulartics',
     'angulartics.google.analytics',
@@ -19,6 +17,11 @@ angular.module('app', [
     'angular-input-stars',
     'ngMessages',
     'datatables',
-    'jsonFormatter',
-    'ng.jsoneditor'
+    'ngTagsInput',
+    'multipleSelect',
+    'ngPopup',
+    'ngLetterAvatar',
+    'ui.bootstrap',
+    'JSONedit',
+    'ui.bootstrap'
 ]);

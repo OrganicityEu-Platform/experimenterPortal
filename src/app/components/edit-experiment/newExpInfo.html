@@ -1,0 +1,46 @@
+<md-progress-circular ng-show="vm.loadingChart" class="md-hue-3 chart_spinner" md-mode="indeterminate"></md-progress-circular>
+
+<nav class="navTags">
+    <a href='#' ng-click="vm.goHome()" style="color:#EF4070; transform: translateY(6px);" class="material-icons" >home</a> 
+</nav>
+<hr/>
+<br>
+<h4>You are creating an experiment </h4>
+
+
+<br>
+    <form name="vm.newExpForm" >
+        <md-input-container class="md-block">
+            <label>Name (required)</label>
+            <input name="name" ng-model="vm.name" ng-required="true"/>
+        </md-input-container>
+        <md-input-container class="md-block">
+            <label>Description (required)</label>
+            <textarea ng-trim="true" name="description" required ng-model="vm.description"></textarea>
+        </md-input-container>
+        <div layout="row">
+        <md-checkbox ng-model="vm.assetsPublic" aria-label="Are Experiment Assets Public?">
+            I want to share my assets
+        </md-checkbox>
+        <i class="material-icons" style="color:blue;cursor:pointer;margin-top:10px; margin-left: 20px; transform: translateY(-12px);" ng-click="vm.showInfoAssets()">info</i>
+        </div>
+        <div ng-show="vm.infoAssets" class="alert alert-info fade in">
+                    <a  href="#" class="close" data-dismiss="alert">&times;</a>
+                <strong>Info!</strong> By selecting this option the assets created by this experiment will be visible for everyone,
+                otherwise only this experiment, and their applications, will be allowed to use them.
+        </div> 
+        <br>
+        <br>
+        <div layout="row">
+        <md-button class="md-flat md-secondary " ng-disabled="vm.newExpForm.$invalid"  ng-click="vm.defineArea()">Experiment Area</md-button>
+        <i class="material-icons" style="color:blue;cursor:pointer;margin-top:10px; margin-left: 20px;" ng-click="vm.showInfoArea()">info</i>
+        </div>
+        <div ng-show="vm.infoArea" class="alert alert-info fade in">
+                    <a  href="#" class="close" data-dismiss="alert">&times;</a>
+                <strong>Info!</strong> You can select the area of your experiment. It is important of you are experimenting with crowd-sensing applications. If you are not sure, skip it, you can define the area later.
+        </div> 
+    </form>
+    <br>
+    <br>
+    <md-button class="md-flat md-primary" ng-click="vm.cancel()" style="float:left"> < Cancel </md-button>
+    <md-button class="md-flat md-primary" ng-disabled="vm.newExpForm.$invalid" ng-click="vm.continue()" style="float:right"> Finish > </md-button>

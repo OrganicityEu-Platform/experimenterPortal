@@ -1,20 +1,124 @@
-<div id="ep_navBar" class="navbar_container">
-    <md-toolbar layout="row" layout-align="end center" class="toolbar">
-        <md-icon aria-label="" md-svg-src="./assets/ep/organicity.svg"></md-icon>
-        <section layout="row">
-            <div ng-if="!vm.isLoggedin()" aria-label="">
-                <md-button style="color: white;" ng-click="vm.login()">
-                    Log In
-                </md-button>
+<nav id="ep_navBar" class="navbar navbar-default" role="navigation">
+
+        <div class="navbar-header" style="padding-right: 30px">
+        <md-icon aria-label="" md-svg-src="./assets/ep/organicity-pink.svg"></md-icon>
+    </div>
+    <!--/.navbar-header-->
+ 
+ <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+        <ul class="nav navbar-nav">
+            <li class="dropdown">
+                <a href="#" class="dropdown-toggle" data-toggle="dropdown">TOOLS </a>
+                <ul class="dropdown-menu multi-column columns-3">
+                    <div class="row">
+                        <div class="col-sm-4">
+                            <ul class="multi-column-dropdown">
+                            <label>Management tools</label>
+                                <li><a href="#" ng-click="vm.callHref('https://communities.organicity.eu/')">Community Management</a>
+                                    <p>Create communities from OrganiCity users based on their profiles</p>
+                                </li>
+
+                                <li class="divider"></li>
+                                <li><a href="#" ng-click="vm.callHref('https://facilitymanager.organicity.eu/')">Facility Management</a></li>
+                                    <p>Manage sites and services</p>
+                                
+                            </ul>
+                        </div>
+                        <div class="col-sm-4">
+                            <ul class="multi-column-dropdown">
+                            <label>Explore and annotate data</label>
+                                <li>
+                                    <a href="#" ng-click="vm.callHref('https://observatory.organicity.eu')" >
+                                       Urban Data Observatory
+                                    </a>
+                                    <p>Explore and filter data </p>
+                                </li>
+                                <li class="divider"></li>
+                                <li>
+                                    <a href="#">
+                                        Data Annotation
+                                    </a>
+                                    <p>Annotate your data </p>
+                                </li>
+                                
+                            </ul>
+                        </div>
+                        <div class="col-sm-4">
+                            <ul class="multi-column-dropdown columns-2 large-col2">
+                            <label>Experimenter tools</label>
+                            <div class="row">
+                            <div class="col-sm-6">
+                                <li><a href="#" ng-click="vm.callHref('https://scenarios.organicity.eu/')">
+                                    Scenarios
+                                </a></li>
+                                <li><a href="#" ng-click="vm.callHref('http://www.tinkerspace.se//')">
+                                    Tinkerspace
+                                </a></li>
+                                <li><a href="#" ng-click="vm.callHref('https://set.organicity.eu/')">
+                                    Smartphone Experimentation
+                                </a></li>
+                                <li><a href="#" ng-click="vm.callHref('http://organicity.eu/tools/opportunistic-connectivity-services/')">
+                                    OppNet
+                                </a></li>
+                            </div>                                
+                            <div class="col-sm-6">    
+                                <li><a href="#" ng-click="vm.callHref('https://organicityeu.github.io/tools/sensinact/index.html')">
+                                    Sensinact
+                                </a></li>
+                                <li><a href="#" ng-click="vm.callHref('https://organicityeu.github.io/tools/tsmart/tsmart/')">
+                                    TSmarT
+                                </a></li>
+                                <li><a href="#" ng-click="vm.callHref('http://organicity.eu/tools/dul-radio/')">
+                                    DUL Radio
+                                </a></li>
+                                <li><a href="#" ng-click="vm.callHref('https://github.com/alexandrainst/processing_websockets')">
+                                    Web Sockets
+                                </a></li>
+                            </div>    
+                            </div>
+                            </ul>
+                        </div>
+                    </div>
+                </ul>
+            </li>
+            <li class="dropdown">
+                <a href="#" class="dropdown-toggle" data-toggle="dropdown">DOCUMENTATION </a>
+                <ul class="dropdown-menu columns-1">
+                    <li><a href="" ng-click="vm.callHref(vm.docref)">Tech Docs</a>
+                    <p> Find technical documentation about the interaction with the facility</p>
+                    </li>
+                    <li class="divider"></li>
+                    <li><a href="" ng-click="vm.callHref(vm.github)">GitHub</a>
+                    <p> Here you can find code examples to speed up your development</p>
+                    </li>
+
+                </ul>
+            </li>    
+            <li class="dropdown">
+                <a href="#" class="dropdown-toggle" data-toggle="dropdown">SUPPORT</a>
+                 <ul class="dropdown-menu columns-1">
+                    <li><a href="" ng-click="vm.callHref(vm.q2a)">Q&A</a>
+                    <p> Get involved in our forum, search the threads and ask our team </p>
+                    </li>
+                                        <li class="divider"></li>
+                    <li><a href="" ng-click="vm.callHref(vm.zoho)">Zoho</a>
+                    <p> Here you can ask questions to the Organicity team regarding particular issues </p>
+                    </li>
+                </ul>
+            </li>    
+        </ul>
+         <div id="log">
+             <a href="#" ng-if="!vm.isLoggedin()" ng-click="vm.login()"> Sign in </a>
+             <div ng-if=" vm.isLoggedin()" layout="row " >
+                <p >{{vm.hello}}</p>
+                 <a  href="#"  ng-click="vm.logout() "> Sign out </a>
             </div>
-            <div ng-if=" vm.isLoggedin()" layout="row " aria-label="">
-                <p style="margin-right:10px; color: white; font-size: small; font-weight: bold;">{{vm.hello}}</p>
-                <md-button style="color: white;" ng-click="vm.logout() ">
-                    Log Out
-                </md-button>
-            </div>
-        </section>
-    </md-toolbar>
-</div>
-<div ui-view></div>
+        </div>    
+    </div>
+    <!--/.navbar-collapse-->
+</nav>
+<!--/.navbar-->
+
+<md-content id="ep_content" ui-view="content"></md-content>
+<br>
 <footer layout="column " class="ep_footer " ng-include=" 'app/components/footer/footer.html' " layout="row " layout-align="center center "></footer>

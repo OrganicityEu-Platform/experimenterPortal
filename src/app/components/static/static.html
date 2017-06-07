@@ -1,8 +1,9 @@
-<section class="static_page" flex>
-    <div class="timeline" layout="row">
-        <div class="content" layout="row" layout-align="start center" flex>
-            <h1>Title</h1>
+<div class="jsonView">
+            <json child="vm.jsonData" default-collapsed="false" type="object"></json>
         </div>
-    </div>
-    <div id="jsonEditor" ng-jsoneditor ng-model="vm.asset"></div>
-</section>
+
+        <hr>
+        <div>
+            <textarea id="jsonTextarea" ng-model="vm.jsonString"></textarea>
+            <span class="red" ng-if="!vm.wellFormed">JSON not well-formed!</span>
+        </div>

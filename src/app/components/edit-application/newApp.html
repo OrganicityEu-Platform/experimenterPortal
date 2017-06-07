@@ -1,0 +1,66 @@
+<md-progress-circular ng-show="vm.loadingChart" class="md-hue-3 chart_spinner"></md-progress-circular>
+
+<nav class="navTags">
+    <a href='#' ng-click="vm.goHome()" style="color:#EF4070; transform: translateY(6px);" class="material-icons" >home</a>  >
+    <a href='#' style="color:#EF4070;" ng-click="vm.goExp()">{{vm.experimentInfo.name}}</a> > 
+    <a href='#' style="color:#EF4070;" ng-click="vm.goApps()">Apps</a>
+</nav>
+<hr/>
+<br>
+<div layout="row">
+<h4>Create a new application </h4> 
+    <i class="material-icons" style="color:blue;cursor:pointer; margin-top:10px;margin-left:20px" ng-click="vm.showInfoMain()">info</i>
+</div>
+<div ng-show="vm.infoMain" class="alert alert-info fade in">
+    <a  href="#" class="close" data-dismiss="alert">&times;</a>
+    <strong>Info!</strong> Create an application. you have to provide a name and a description. Then select the type of application and indicates the uel where
+    the application can be found.
+    <br>
+</div>
+
+    <form name="vm.newAppForm" novalidate style="width:100%">
+        <md-input-container class="md-block">
+            <label>Name (required)</label>
+            <input name="name" ng-required="true" ng-model="vm.appInfo.name"/>
+        </md-input-container>
+        <md-input-container class="md-block">
+            <label>Description (required)</label>
+            <textarea ng-trim="true" name="description" ng-required="true" ng-model="vm.appInfo.description"></textarea>
+        </md-input-container>
+        <md-input-container class="md-block">
+            <label>URL</label>
+            <input type="url" ng-required="true" name="link" ng-model="vm.appInfo.link"/>
+        </md-input-container>
+        <md-input-container class="md-block">
+        <md-checkbox ng-click="vm.setSe()" aria-label="Are Experiment Assets Public?">
+            Smartphone experimentation application
+        </md-checkbox>
+        </md-input-container>
+        <label>Application type</label>
+        <div ng-if="!vm.isSe">
+        <select class="form-control" ng-required="true" ng-model="vm.appInfo.type">
+            <option value="desktop">desktop</option>
+            <option value="mobile" >mobile</option>
+            <option value="web" >web</option>
+        </select>
+            <!--md-select ng-required="true" ng-model="vm.appInfo.type">
+                <md-option value="desktop">desktop</md-option>
+                <md-option value="mobile" >mobile</md-option>
+                <md-option value="web" >web</md-option>
+            </md-select-->
+        </div>
+        <div ng-if="vm.isSe">
+            <md-input-container class="md-block">
+                <label>URL Description</label>
+                <input type="url" name="urldescription" ng-model="vm.appInfo.more.urlDescription">
+                <div ng-if="!vm.newAppForm.urldescription.$pristine" ng-messages="vm.newAppForm.urldescription.$error">
+                    <div ng-message="url">Not valid url</div>
+                </div>
+            </md-input-container>
+        </div>
+    </form>
+    <br>
+    <br>
+    <md-button class="md-flat md-primary" ng-click="vm.goApps()" style="float:left">< Go back </md-button>
+    <md-button ng-if="!vm.isSe" class="md-flat md-primary" ng-disabled="vm.newAppForm.$invalid" ng-click="vm.create()" style="float:right"> Create > </md-button>
+    <md-button style="float:right" ng-if="vm.isSe"  ng-disabled="vm.newAppForm.$invalid" class="md-flat md-primary" ng-click="vm.selectPlugins() "> SELECT PLUGINS ></md-button>

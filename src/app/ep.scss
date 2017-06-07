@@ -7,35 +7,18 @@ $ep_blue_light: #065A6F;
 }
 
 //////// added from experimenter portal
-.md-button.md-default-theme.md-flat.md-secondary {
-    background-color: $ep_blue;
-    color: $font_color_white;
-}
 
-.md-button.md-default-theme.md-secondary.md-flat:not([disabled]):hover {
-    background-color: $ep_blue_light;
-    color: $font_color_white;
-}
+////////// NAV BAR 
 
-.md-button.md-default-theme.md-secondary.md-flat:not([disabled]):focus {
-    background-color: $ep_blue;
-    color: $font_color_white;
-}
 
-#ep_welcome {
-    margin-top: 10vh;
-    label {
-        margin: auto;
-        color: #EF4070;
-        font-size: 300%
-    }
-    img {
-        margin-top: 5vh;
-        height: 300px;
-    }
+////////////////////////////
+
+.chart_spinner {
+    z-index:500 !important;
 }
 
 .ep_footer {
+    z-index: 200 !important;
     width: 100%;
     position: fixed;
     bottom: 0;
@@ -54,29 +37,136 @@ $ep_blue_light: #065A6F;
     }
 }
 
+.navTags {
+   color:$ep_blue
+  
+}
+////////////////// navigation bar
 #ep_navBar {
-    md-toolbar.md-default-theme {
-        background-color: $organicity_pink;
+    label{
+        color:gray;
     }
-    .toolbar {
-        color: white;
-        md-icon {
+    p {
+        color: black;
+        opacity: 0.5;
+    }
+    a {
+        border-style: solid;
+        border-width: 1px;
+        border-color: white;
+        display: block;
+        clear: both;
+        line-height: 1.428571429;
+        white-space: normal;
+        color: $ep_blue_light;
+    }
+    a:hover {
+        text-decoration: none;
+        background-color: rgba(gray, 0.08);
+        color: $organicity_pink;
+        border-width: 1px;
+        border-color: rgba(gray, 0.08);
+    }
+
+    
+    width:100%;
+    background-color:white;
+    border-width: 1px;
+    border-color: $organicity_pink;
+    color: $organicity_pink;
+    md-icon {
             margin-left: 15px;
-            height: 60px;
-            width: 120px;
+            width: 100px;
+            height: 45px;
         }
-        section {
-            color: white;
-            margin-right: 15px;
+
+    #log {
+        float:right;
+        height:35px;
+        
+        p{
+
+            margin-top:15px;
+            margin-right:15px;
+            color: $organicity_pink;
+            opacity: 1;
         }
+        a {
+            padding:15px 15px 15px 15px;
+            color: $ep_blue_light;
+            text-decoration: none;
+        }
+
+         a:hover {
+            text-decoration: none;
+            background-color: rgba(gray, 0.08);
+            color: $organicity_pink;
+            border-width: 1px;
+            border-color: rgba(gray, 0.08);
+        }
+    }   
+}
+
+.dropdown:hover .dropdown-menu {
+    display: block;
+}
+
+
+.dropdown-menu {
+    min-width: 400px;
+}
+
+.dropdown-menu.columns-3 {
+    padding-left:10px;
+    min-width: 1000px;
+}
+
+.dropdown-menu.columns-1 {
+    padding-left:10px;
+    padding-right:10px;
+    min-width: 400px;
+}
+
+.dropdown-menu.columns-2 {
+    min-width: 800px;
+}
+
+.dropdown-menu.large-col2 {
+    min-width: 800px;
+}
+.dropdown-menu li a {
+    padding: 5px 15px;
+    font-weight: 300;
+}
+.multi-column-dropdown {
+    list-style: none;
+  margin: 0px;
+  padding: 0px;
+}
+
+@media (max-width: 767px) {
+    .dropdown-menu.multi-column {
+        min-width: 240px !important;
+        overflow-x: hidden;
     }
 }
 
+
+///////////////////////////////////
+body {
+  height: 100%;
+  margin: 0
+}
+
 #ep_sidebar {
+    position: fixed;
+    top: 70px;
+    margin-left: 10px;
     width: 220px;
     color: $ep_blue;
     div {
-        padding: 10px;
+        width: 100%;
+        padding: 0px;
         .md-button {
             padding: 0;
         }
@@ -84,11 +174,9 @@ $ep_blue_light: #065A6F;
 }
 
 #ep_content {
-    width: calc(100% - 220px);
-    margin-bottom: 80px;
-    margin-top: 20px;
-    margin-left: 20px;
-    margin-right: 20px;
+    width:95%;
+    margin: auto;
+    margin-bottom: 60px;
 }
 
 .ep_pLabel {
@@ -114,6 +202,7 @@ $ep_blue_light: #065A6F;
 }
 
 .epConfirmDiag {
+    z-index: 200 !important;
     width: 500px;
     h2 {
         margin-left: 30px;
@@ -180,13 +269,20 @@ ul.rating {
 }
 
 .ep-tag {
+
     display: inline-block;
     position: relative;
-    line-height: 1.65em;
-    margin: 0 .3em .3em 0;
-    padding: 0 .4em 0 .4em;
-    background-color: #eee;
-    border-radius: .45em;
+    background-color: #fff;
+    border-radius: .7em;
+    color: $organicity_pink_3;
+    border-style: solid;
+    border-width: 1px;
+    border-color: $organicity_pink_3;
+    margin: 0em .5em 0em .0em;
+    label {
+        font-weight: normal;
+        margin: .2em .5em .2em .5em;
+    }
 }
 
 #assetEdit {
@@ -226,12 +322,15 @@ ul.rating {
 }
 
 .ep_info, .ep_warn{
-    max-width:50%;
     border: 1px solid;
-    margin: 10px 10%;
     padding:10px 5px 10px 60px;
     background-repeat: no-repeat;
     background-position: 10px center;
+    z-index: 200 !important;
+    width:40%;
+    margin-left:20%;
+    margin-top:10%;
+    position:fixed;
 }
 
 .ep_info {
@@ -239,9 +338,180 @@ ul.rating {
     background-color: #BDE5F8;
     background-image: url('../assets/ep/info.svg');
 }
-
+ 
 .ep_warn {
     color: #9F6000;
     background-color: #FEEFB3;
     background-image: url('../assets/ep/warn.svg');
 }
+
+
+.autocomplete-list ul li.autocomplete-active {
+    background-color: $organicity_pink_1;
+}
+
+.form-item-container .list-inline li span {
+    border: 1px solid $organicity_pink_1;
+}
+
+tags-input  {
+  .tags {
+    background-color: #fff;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-shadow: inset 0 1px 1px rgba(0,0,0,0.075);
+    transition: #fff ease-in-out .15s, box-shadow ease-in-out .15s;
+    &.focused {
+      border-color: #fff;
+      box-shadow: inset 0 1px 1px rgba(0,0,0,0.075),0 0 8px $organicity_pink_3;
+    }
+    .tag-item {
+      background: #fff;
+      border: 1px solid $organicity_pink_3;
+      border-radius: 4px;
+      color: $organicity_pink_3;
+      &.selected {
+        background: $organicity_pink_1;
+        border: 1px solid $organicity_pink_1;
+        border-radius: 4px;
+        color: #fff;
+      }
+      button {
+        background: transparent;
+        color: #000;
+        opacity: .4;
+      }
+    }
+  }
+  .autocomplete {
+    border-radius: 4px;
+    .suggestion-item {
+      &.selected {
+        color: #262626;
+        background-color: #e9e9e9;
+        em {
+          color: #262626;
+          background-color: #ffff00;
+        }
+      }
+      em {
+        font-weight: normal;
+        background-color: #ffff00;
+      }
+    }
+  }
+}
+
+md-input-container:not(.md-input-invalid).md-input-focused {
+    label {
+        color: $terciary_color;
+    }
+    .md-input {
+        border-color: rgba(0, 0, 0, 0.12);
+    }
+}
+
+md-dialog {
+    background-color: white;
+}
+
+md-dialog {
+    background-color: rgba(255, 0, 0, 0);
+    box-shadow: 0px 0px 0px 0px transparent;
+    max-height: 100%;
+}
+
+md-dialog-content {
+    background-color: white;
+}
+
+md-content {
+    width: 100%;
+    background-color: rgba(0, 0, 0, 0);
+    position: relative;
+}
+
+.md-button.md-flat.md-primary {
+    background-color: white;
+    color: $organicity_pink;
+    border-style: solid;
+    border-width: 1px;
+    border-color: $organicity_pink;
+}
+
+.md-button.md-primary.md-flat:not([disabled]):hover {
+    background-color: $organicity_pink;
+    color: white;
+    border-style: solid;
+    border-width: 1px;
+    border-color: $organicity_pink;
+}
+
+.md-button.md-primary.md-flat:not([disabled]):focus {
+    background-color: $organicity_pink;
+    color: white;
+    border-style: solid;
+    border-width: 1px;
+    border-color: $organicity_pink;
+}
+
+.md-button.md-flat.md-secondary {
+    background-color: white;
+    color: $ep_blue;
+    border-style: solid;
+    border-width: 1px;
+    border-color: $ep_blue;
+}
+
+.md-button.md-secondary.md-flat:not([disabled]):hover {
+    background-color: $ep_blue;
+    color: white;;
+    border-style: solid;
+    border-width: 1px;
+    border-color: $ep_blue;
+}
+
+.md-button.md-secondary.md-flat:not([disabled]):focus {
+    background-color: $ep_blue;
+    color: white;
+    border-style: solid;
+    border-width: 1px;
+    border-color: $ep_blue;
+}
+
+.md-button[disabled] {
+  opacity: 0.2; 
+  cursor: not-allowed;
+}
+
+json-editor{
+    color: $ep_blue;
+}
+textarea:focus,
+input[type="text"]:focus,
+input[type="password"]:focus,
+input[type="datetime"]:focus,
+input[type="datetime-local"]:focus,
+input[type="date"]:focus,
+input[type="month"]:focus,
+input[type="time"]:focus,
+input[type="week"]:focus,
+input[type="number"]:focus,
+input[type="email"]:focus,
+input[type="url"]:focus,
+input[type="search"]:focus,
+input[type="tel"]:focus,
+input[type="color"]:focus,
+
+.uneditable-input:focus {   
+  border-color: $organicity_pink_1;
+  box-shadow: 0 1px 1px white inset, 0 0 8px $organicity_pink_1;
+  outline: 0 none;
+}
+
+select.form-control:focus {
+    border-color: $organicity_pink_1;
+  box-shadow: 0 1px 1px white inset, 0 0 8px $organicity_pink_1;
+  outline: 0 none;
+}
+

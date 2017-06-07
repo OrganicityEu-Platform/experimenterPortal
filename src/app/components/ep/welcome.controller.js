@@ -2,11 +2,11 @@
     'use strict';
 
     angular.module('app.components')
-        .controller('EpWelcomeController', EpWelcomeController);
+        .controller('WelcomeController', WelcomeController);
 
-    EpWelcomeController.$inject = ['$mdDialog', '$rootScope'];
+    WelcomeController.$inject = ['$mdDialog', '$rootScope'];
 
-    function EpWelcomeController($mdDialog, $rootScope) {
+    function WelcomeController($mdDialog, $rootScope) {
         var vm = this;
         
 

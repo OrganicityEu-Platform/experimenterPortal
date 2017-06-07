@@ -1,0 +1,39 @@
+<md-progress-circular ng-show="vm.loadingChart" class="md-hue-3 chart_spinner" md-mode="indeterminate"></md-progress-circular>
+
+<nav class="navTags">
+    <a href='#' ng-click="vm.goHome()" style="color:#EF4070; transform: translateY(6px);" class="material-icons" >home</a>  >
+    <a href='#' style="color:#EF4070;" ng-click="vm.goExp()">{{vm.experimentInfo.name}}</a>
+</nav>
+<hr/>
+<br>
+<h4>Experiment Applications </h4>
+<br>
+
+        <md-button class="md-flat md-primary" ng-click="vm.addApp()">
+            New Application
+        </md-button>
+        <br>
+        <br>
+<div style="width: 99%">
+        <table datatable="ng" dt-options="vm.dtOptions" dt-column-defs="vm.dtColumnDefs" class="hover">
+            <thead>
+                <tr>
+                    <th>Name</th>
+                    <th>Description</th>
+                    <th>Type</th>
+                    <th>Remove</th>
+                </tr>
+            </thead>
+            <div>
+                <md-progress-circular ng-show="vm.loadingChart" class="md-hue-3 chart_spinner" md-mode="indeterminate"></md-progress-circular>
+            </div>
+            <tbody>
+                <tr ng-repeat="app in vm.apps">
+                    <td align="center" class="selectCell" width="10%" ng-click="vm.detail(app)">{{ app.name.toUpperCase() }}</td>
+                    <td align="left" class="selectCell" width="60%" ng-click="vm.detail(app)">{{ vm.ShortDescription(app.description) }}</td>
+                    <td align="center" class="selectCell" width="10%" ng-click="vm.detail(app)">{{ app.type.toUpperCase() }}</td>
+                    <td align="center" width="10%" ng-click="vm.confirmRemove($event, app)"></td>
+                </tr>
+            </tbody>
+        </table>
+</div>

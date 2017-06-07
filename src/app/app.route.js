@@ -1,7 +1,8 @@
 (function() {
     'use strict';
 
-    angular.module('app').config(config);
+    angular.module('app')
+        .config(config);
 
     /*
       Check app.config.js to know how states are protected
@@ -10,12 +11,15 @@
     config.$inject = ['$stateProvider', '$urlRouterProvider', '$locationProvider', '$logProvider', 'RestangularProvider'];
 
     function config($stateProvider, $urlRouterProvider, $locationProvider, $logProvider, RestangularProvider) {
-        $stateProvider
-
-        /*
-        -- Layout state --
-        Top-level state used for inserting the layout(navbar and footer)
-        */
+        $stateProvider.state('callback', {
+                url: '/',
+                authenticate: false,
+                resolve: {
+                    callback: function(auth) {
+                        auth.callback();
+                    }
+                }
+            })
             .state('layout', {
                 url: '',
                 abstract: true,
@@ -23,104 +27,66 @@
                 controller: 'LayoutController',
                 controllerAs: 'vm'
             })
-
-
-        .state('layout.welcome', {
-            url: '/welcome',
-            templateUrl: 'app/components/ep/welcome.html',
-            controller: 'EpWelcomeController',
-            controllerAs: 'vm'
-        })
-
-
-        
-
-        .state('layout.ep', {
-            url: '',
-            abstract: true,
-            templateUrl: 'app/components/ep/eplayout.html',
-            controller: 'EpLayoutController',
-            controllerAs: 'vm',
-            resolve: {
-                loadTools: function($q, EpDictionaries) {
-                    var defer = $q.defer();
-                    EpDictionaries.loadTools(function() {
-                        defer.resolve({ success: true });
-                    }, function() {
-                        defer.resolve({ success: false });
-                    });
-                    return defer.promise;
+            .state('layout.welcome', {
+                url: '/welcome',
+                views: { 
+                    'content@layout': {
+                        templateUrl: 'app/components/ep/welcome.html',
+                        controller: 'WelcomeController',
+                        controllerAs: 'vm',
+                        resolve: {
+                            islogged: function(auth) {
+                                auth.logout();
+                            }
+                        }
+                    }
                 },
-            }
-
-        })
-
-        .state('layout.parts', {
-            url: '/participants',
-            templateUrl: 'app/components/ep/invPortal.html',
-            controller: 'InvPortalController',
-            controllerAs: 'vm',
-            resolve: {
-                islogged: function($state, auth) {
-                            if (!auth.isAuth()) {
-                                return auth.logout();
-                            }
-                        },
-                loadInvitations: function ($q, EpCommunity) {
-                    var defer = $q.defer();
-                    EpCommunity.loadParInvitations (function () {
-                        defer.resolve();
-                    }, function () {
-                        defer.resolve();
-                    });
-                    return defer.promise;
+            })
+            .state('layout.static', {
+                url: '/static',
+                views: { 
+                    'content@layout': {
+                        templateUrl: 'app/components/static/static.html',
+                        controller: 'StaticController',
+                        controllerAs: 'vm'
+                    }
                 }
-            },
-        })
-
-        .state('layout.ep.exps', {
-            url: '/experiments',
-            views: {
-                'content@layout.ep': {
-                    templateUrl: 'app/components/ep/epExperiments.html',
-                    controller: 'EpExperimentsController',
-                    controllerAs: 'vm',
-                    resolve: {
-                        islogged: function($state, auth) {
-                            if (!auth.isAuth()) {
-                                return auth.logout();
+            })
+            .state('layout.exps', {
+                url: '/experiments',
+                views: {
+                    'content@layout': {
+                        templateUrl: 'app/components/ep/experiments.html',
+                        controller: 'ExperimentsController',
+                        controllerAs: 'vm',
+                        resolve: {
+                            islogged: function(auth) {
+                                if (!auth.isAuth()) {
+                                    return auth.logout();
+                                }
+                            },
+                            load: function(Experiments, $q) {
+                                var defer = $q.defer();
+                                Experiments.loadExperiments(
+                                    function() { defer.resolve({ success: true }); },
+                                    function() { defer.resolve({ success: false }); }
+                                );
+                                return defer.promise;
                             }
-                        },
-                        load: function(Experiments, $q, $state) {
-                            var defer = $q.defer();
-                            Experiments.loadExperiments(function() {
-                                defer.resolve({ success: true });
-                            }, function() {
-                                defer.resolve({ success: false });
-                            });
-                            return defer.promise;
                         }
                     }
                 }
-            }
-        })
-
-        /*
-         * Paths to create a new experiment: generic information
-         * and area (regions)
-         */
-
-        .state('layout.ep.newExpInfo', {
-            abstract: true,
-            url: ''
-        })
-
-        .state('layout.ep.newExpInfo.info', {
+            })
+            .state('layout.newExpInfo', {
+                abstract: true,
+                url: ''
+            })
+            .state('layout.newExpInfo.info', {
                 url: '/new-experiment/info',
                 views: {
-                    'content@layout.ep': {
-                        templateUrl: 'app/components/ep_new-experiment/newExpInfo.html',
-                        controller: 'EpNewExpInfoController',
+                    'content@layout': {
+                        templateUrl: 'app/components/edit-experiment/newExpInfo.html',
+                        controller: 'NewExpInfoController',
                         controllerAs: 'vm'
                     }
                 },
@@ -132,12 +98,12 @@
                     }
                 }
             })
-            .state('layout.ep.newExpInfo.area', {
+            .state('layout.newExpInfo.area', {
                 url: '/new-experiment/area',
                 views: {
-                    'content@layout.ep': {
-                        templateUrl: 'app/components/ep_new-experiment/newExpArea.html',
-                        controller: 'EpNewExperAreaController',
+                    'content@layout': {
+                        templateUrl: 'app/components/edit-experiment/newArea.html',
+                        controller: 'NewExpAreaController',
                         controllerAs: 'vm'
                     }
                 },
@@ -149,365 +115,378 @@
                     }
                 }
             })
-
-        /**
-         * Experiment detail        
-         */
-        .state('layout.ep.detail', {
-            url: '/detail/:expId?onEdit',
-            views: {
-                'content@layout.ep': {
-                    templateUrl: 'app/components/ep/epExpDetail.html',
-                    resolve: {
-                        loadExpInfo: function($q, $state, EpExpInfo, $rootScope, $stateParams) {
-                            if ($stateParams.onEdit) {
-                                return { success: true };
-                            }
-                            var defer = $q.defer();
-                            defer.promise.then(function() {
-                            }, function() {
-                                return $rootScope.$emit('experimentInfoFail', 'info');
-                            });
-                            EpExpInfo.loadExp($stateParams.expId, defer.resolve, defer.reject);
-                            return defer.promise;
-                        },
+            .state('layout.detail', {
+                url: '/detail/:expId',
+                views: {
+                    'content@layout': {
+                        templateUrl: 'app/components/ep/experiment/experimentInfo.html',
+                        controller: 'ExperimentInfoController',
+                        controllerAs: 'vm'
                     }
                 },
-                'experimentInfo@layout.ep.detail': {
-                    templateUrl: 'app/components/ep/epExperimentInfo.html',
-                    controller: 'EpExperimentInfoController',
-                    controllerAs: 'vm',
-                    resolve: {
-                        loadExpDomains: function($q, EpExpInfo, $stateParams) {
-                            if ($stateParams.onEdit) {
-                                return { success: true };
-                            }
-                            var defer = $q.defer();
-                            EpExpInfo.loadDomains($stateParams.expId, function() {
+                resolve:{
+                    islogged: function($location, auth) {
+                        if (!auth.isAuth()) {
+                            return auth.logout();
+                        }
+                    },
+                    loadExpInfo: function($q, ExpInfo, $stateParams) {
+                        var defer = $q.defer();
+                        ExpInfo.loadExp($stateParams.expId,
+                            function() {
                                 defer.resolve({ success: true });
-                            }, function() {
-                                defer.resolve({ success: false });
-                            });
-                            return defer.promise;
-                        }
+                            },
+                            function() { defer.resolve({ success: false }); }
+                        );
+                        return defer.promise;
                     }
-                },
-                'apps@layout.ep.detail': {
-                    templateUrl: 'app/components/ep/epExperimentApps.html',
-                    controller: 'EpExperimentAppsController',
-                    controllerAs: 'vm',
-                    resolve: {
-                        loadApps: function($q, EpApplications, $stateParams) {
-                            var defer = $q.defer();
-                            EpApplications.loadApps($stateParams.expId,
-                                function() {
-                                    defer.resolve({ success: true });
-                                },
-                                function() {
-                                    defer.resolve({ success: false });
+                }
+            })
+            .state('layout.appInfo', {
+                url: '/:expId/detail/application/:appId?onEdit',
+                views: {
+                    'content@layout': {
+                        templateUrl: 'app/components/edit-application/appDetail.html',
+                        controller: 'AppDetailController',
+                        controllerAs: 'vm',
+                        resolve: {
+                            loadApp: function($q, $state, AppInfo, $stateParams) {
+                                if ($stateParams.onEdit === 'true') {
+                                    return;
+                                }
+                                var defer = $q.defer();
+                                defer.promise.then(function() {
+                                    return;
+                                }, function() {
+                                    return $state.go('layout.exps');
                                 });
-
-
-                            return defer.promise;
-                        },
+                                AppInfo.loadApp($stateParams.expId, $stateParams.appId, defer.resolve, defer.reject);
+                                return defer.promise;
+                            },
+                            islogged: function($location, auth) {
+                                if (!auth.isAuth()) {
+                                    return auth.logout();
+                                }
+                            }
+                        }
                     }
-
+                }
+            })
+            .state('layout.expEdition', {
+                abstract: true,
+                url: '',
+            })
+            .state('layout.expEdition.area', {
+                url: '/:expId/experiment-edition/area',
+                views: {
+                    'content@layout': {
+                        templateUrl: 'app/components/edit-experiment/editArea.html',
+                        controller: 'EditAreaController',
+                        controllerAs: 'vm'
+                    }
                 },
-                'exp_assets@layout.ep.detail': {
-                    templateUrl: 'app/components/ep/epExpAssets.html',
-                    controller: 'EpExpAssetsController',
-                    controllerAs: 'vm',
-                    resolve: {
-                        loadDevices: function($q, EpDevices, $stateParams) {
-                            var defer = $q.defer();
-                            EpDevices.loadDevices($stateParams.expId,
-                                function() {
-                                    defer.resolve({ success: true });
-                                },
-                                function() {
-                                    defer.resolve({ success: false });
+                resolve: {
+                    islogged: function($location, auth) {
+                        if (!auth.isAuth()) {
+                            return auth.logout();
+                        }
+                    },
+                    loadExpInfo: function($q, ExpInfo, $stateParams) {
+                        var defer = $q.defer();
+                        ExpInfo.loadExp($stateParams.expId,
+                            function() {
+                                defer.resolve({ success: true });
+                            },
+                            function() { defer.resolve({ success: false }); }
+                        );
+                        return defer.promise;
+                    }
+                }
+            })
+            .state('layout.expEdition.tags', {
+                url: '/:expId/experiment-edition/tags',
+                views: {
+                    'content@layout': {
+                        templateUrl: 'app/components/edit-tags/editTags.html',
+                        controller: 'EditTagsController',
+                        controllerAs: 'vm',
+                        resolve: {
+                            islogged: function($location, auth) {
+                                if (!auth.isAuth()) {
+                                    return auth.logout();
+                                }
+                            },
+                            loadSelectedSDomains: function(Annotations, $q, $stateParams) {
+                                var defer = $q.defer();
+                                Annotations.loadSelectedDomains($stateParams.expId,
+                                    function() { defer.resolve({ success: true }); },
+                                    function() { defer.resolve({ success: false }); }
+                                );
+                                return defer.promise;
+                            },
+                            loadAllDomains: function(Annotations, $q) {
+                                var defer = $q.defer();
+                                Annotations.loadAllDomains(
+                                    function() { defer.resolve({ success: true }); },
+                                    function() { defer.resolve({ success: false }); }
+                                );
+                                return defer.promise;
+                            }
+                        }
+                    }
+                }
+            })
+            .state('layout.expEdition.credentials', {
+                url: '/:expId/experiment-edition/credentials',
+                views: {
+                    'content@layout': {
+                        templateUrl: 'app/components/edit-credentails/editCredentials.html',
+                        controller: 'EditCredentialsController',
+                        controllerAs: 'vm',
+                        resolve: {
+                            islogged: function($location, auth) {
+                                if (!auth.isAuth()) {
+                                    return auth.logout();
+                                }
+                            },
+                            loadUris: function(ExperimentUrisAPI, $q, ExpInfo, $state, $stateParams) {
+                                var defer = $q.defer();
+                                ExpInfo.loadExp($stateParams.expId,
+                                    function () {
+                                        var cliId = ExpInfo.getNewExperiment().clientInfo.client_id;
+                                        ExperimentUrisAPI.getUris(cliId,
+                                            function(res) {
+                                                return defer.resolve({ data: res });
+                                            },
+                                            function() {
+                                                return defer.resolve($state.go('layout.detail', { expId: $stateParams.expId}));
+                                            });
+                                    }, 
+                                    function() { return defer.resolve($state.go('layout.detail', { expId: $stateParams.expId})); }
+                                );
+                                return defer.promise;
+                            }
+                        }
+                    }
+                }
+            })
+            .state('layout.expEdition.assets', {
+                url: '/:expId/experiment-edition/assets',
+                views: {
+                    'content@layout': {
+                        templateUrl: 'app/components/ep/assets/expAssets.html',
+                        controller: 'ExpAssetsController',
+                        controllerAs: 'vm',
+                        resolve: {
+                            islogged: function($location, auth) {
+                                if (!auth.isAuth()) {
+                                    return auth.logout();
+                                }
+                            },
+                            loadAssets: function(Devices, $stateParams, ExpInfo, $q, $state) {
+                                var defer = $q.defer();
+                                ExpInfo.loadExp($stateParams.expId,
+                                    function () {  
+                                    Devices.loadDevices($stateParams.expId,
+                                        function(res) {
+                                            return defer.resolve({data: res}); 
+                                        },
+                                        function() {
+                                            return defer.resolve($state.go('layout.detail', { expId: $stateParams.expId}));
+                                        });
+                                    },
+                                    function() { return defer.resolve($state.go('layout.detail', { expId: $stateParams.expId})); }
+                                );
+                                return defer.promise;
+                            }
+                        }
+                    }
+                }
+            })
+            .state('layout.expEdition.apps', {
+                url: '/:expId/experiment-edition/apps',
+                views: {
+                    'content@layout': {
+                        templateUrl: 'app/components/ep/application/experimentApps.html',
+                        controller: 'ExperimentAppsController',
+                        controllerAs: 'vm',
+                        resolve: {
+                            islogged: function($location, auth) {
+                                if (!auth.isAuth()) {
+                                    return auth.logout();
+                                }
+                            },
+                            loadApps: function(Applications, $stateParams, ExpInfo, $q, $state) {
+                                var defer = $q.defer();
+                                ExpInfo.loadExp($stateParams.expId,
+                                    function () {  
+                                    Applications.loadApps($stateParams.expId,
+                                        function(res) {
+                                            return defer.resolve({data: res}); 
+                                        },
+                                        function() {
+                                            return defer.resolve($state.go('layout.detail', { expId: $stateParams.expId}));
+                                        });
+                                    },
+                                    function() { return defer.resolve($state.go('layout.detail', { expId: $stateParams.expId})); }
+                                );
+                                return defer.promise;
+                            }
+                        }
+                    }
+                }
+            })
+             .state('layout.expEdition.participants', {
+                url: '/:expId/experiment-edition/participants',
+                views: {
+                    'content@layout': {
+                        templateUrl: 'app/components/ep/community/community.html',
+                        controller: 'CommunityController',
+                        controllerAs: 'vm',
+                        resolve: {
+                            islogged: function($location, auth) {
+                                if (!auth.isAuth()) {
+                                    return auth.logout();
+                                }
+                            },
+                            loadParts: function(Community, $stateParams, ExpInfo, $q, $state) {
+                                var defer = $q.defer();
+                                ExpInfo.loadExp($stateParams.expId,
+                                    function () {  
+                                    Community.loadInvitations($stateParams.expId,
+                                        function(res) {
+                                            return defer.resolve({data: res}); 
+                                        },
+                                        function() {
+                                            return defer.resolve($state.go('layout.detail', { expId: $stateParams.expId}));
+                                        });
+                                    },
+                                    function() { return defer.resolve($state.go('layout.detail', { expId: $stateParams.expId})); }
+                                );
+                                return defer.promise;
+                            }
+                        }
+                    }
+                }
+            })
+            .state('layout.newApp', {
+                url: '/:expId/new-application',
+                views: {
+                    'content@layout': {
+                        templateUrl: 'app/components/edit-application/newApp.html',
+                        controller: 'NewApplicationController',
+                        controllerAs: 'vm',
+                        resolve: {
+                            islogged: function($location, auth) {
+                                if (!auth.isAuth()) {
+                                    return auth.logout();
+                                }
+                            }
+                        }
+                    }
+                }
+            })
+
+        .state('layout.newApp.sePlugins', {
+                url: '/:expId/new-application/sePlugins',
+                views: {
+                    'content@layout': {
+                        templateUrl: 'app/components/edit-sePlugins/seEditPlugins.html',
+                        controller: 'SeEditPluginsController',
+                        controllerAs: 'vm',
+                        resolve: {
+                            loadPlugins: function($q, Dictionaries, $rootScope) {
+                                var defer = $q.defer();
+                                defer.promise.then(function() {
+                                    return;
+                                }, function() {
+                                    $rootScope.$emit('sePluginsLoadFail', '');
+                                    return;
                                 });
-                            return defer.promise;
+                                Dictionaries.loadSePlugins(defer.resolve, defer.reject);
+                                return defer.promise;
+                            },
+                            islogged: function($location, auth) {
+                                if (!auth.isAuth()) {
+                                    return auth.logout();
+                                }
+                            }
                         }
                     }
-                },
-                // 'sel_assets@layout.ep.detail': {
-                //     templateUrl: 'app/components/ep/epSelAssets.html',
-                //     controller: 'EpSelAssetsController',
-                //     controllerAs: 'vm',
-                // },
-                'exp_community@layout.ep.detail': {
-                    templateUrl: 'app/components/ep/community.html',
-                    controller: 'CommunityController',
-                    controllerAs: 'vm',
-                    resolve: {
-                        loadInvitations: function($q, EpCommunity, $stateParams) {
-                            var defer = $q.defer();
-                            EpCommunity.loadInvitations($stateParams.expId,
-                                function() {
-                                    defer.resolve({ success: true });
-                                },
-                                function() {
-                                    defer.resolve({ success: false });
+                }
+            })
+            .state('layout.sePlugins', {
+                url: '/:expId/app-edition/:appId/sePlugins',
+                views: {
+                    'content@layout': {
+                        templateUrl: 'app/components/edit-sePlugins/seEditPlugins.html',
+                        controller: 'SeModifyPluginsController',
+                        controllerAs: 'vm',
+                        resolve: {
+                            loadPlugins: function($q, Dictionaries, $rootScope) {
+                                var defer = $q.defer();
+                                defer.promise.then(function() {
+                                    return;
+                                }, function() {
+                                    $rootScope.$emit('sePluginsLoadFail', '');
+                                    return;
                                 });
-                            return defer.promise;
-                        }
-                    }
-                }
-            },
-            resolve: {
-                islogged: function($location, auth) {
-                    if (!auth.isAuth()) {
-                        return auth.logout();
-                    }
-                }
-            }
-        })
-
-        /*
-         * Information of the selected application
-         */
-        .state('layout.ep.appInfo', {
-            url: '/:expId/detail/application/:appId?onEdit',
-            views: {
-                'content@layout.ep': {
-                    templateUrl: 'app/components/ep/epAppDetail.html',
-                    controller: 'EpAppDetailController',
-                    controllerAs: 'vm',
-                    resolve: {
-                        loadApp: function($q, $state, AppInfo, $stateParams) {
-                            if ($stateParams.onEdit) {
-                                return;
-                            }
-                            var defer = $q.defer();
-                            defer.promise.then(function() {
-                                return;
-                            }, function() {
-                                return $state.go('layout.ep.exps');
-                            });
-
-                            AppInfo.loadApp($stateParams.expId, $stateParams.appId, defer.resolve, defer.reject);
-                            return defer.promise;
-                        },
-                        loadAppTypes: function($q, $state, EpDictionaries) {
-
-                            var defer = $q.defer();
-                            defer.promise.then(function() {
-                                return;
-                            }, function() {
-                                return $state.go('layout.ep.exps');
-                            });
-                            EpDictionaries.loadAppTypes(defer.resolve, defer.reject);
-                            return defer.promise;
-                        },
-                        islogged: function($location, auth) {
-                            if (!auth.isAuth()) {
-                                return auth.logout();
+                                Dictionaries.loadSePlugins(defer.resolve, defer.reject);
+                                return defer.promise;
+                            },
+                            islogged: function($location, auth) {
+                                if (!auth.isAuth()) {
+                                    return auth.logout();
+                                }
                             }
                         }
                     }
                 }
-            }
-        })
-
-        /**
-         * Experiment edition
-         */
-        .state('layout.ep.expEdition', {
-            abstract: true,
-            url: '',
-        })
-
-        .state('layout.ep.expEdition.area', {
-            url: '/:expId/experiment-edition/area',
-            views: {
-                'content@layout.ep': {
-                    templateUrl: 'app/components/ep_editArea/editArea.html',
-                    controller: 'EditAreaController',
-                    controllerAs: 'vm'
-                }
-            },
-            resolve: {
-                islogged: function($location, auth) {
-                    if (!auth.isAuth()) {
-                        return auth.logout();
-                    }
-                }
-            }
-        })
-
-        .state('layout.ep.expEdition.tags', {
-            url: '/:expId/experiment-edition/tags',
-            views: {
-                'content@layout.ep': {
-                    templateUrl: 'app/components/ep_editTags/epEditTags.html',
-                    controller: 'EditTagsController',
-                    controllerAs: 'vm',
-                }
-            },
-            resolve: {
-                loadDomains: function($q, EpDictionaries, $rootScope) {
-                    var defer = $q.defer();
-                    defer.promise.then(function() {
-                        return;
-                    }, function() {
-                        return $rootScope.$emit('allTagDomainsInfoFail', '');
-                    });
-                    EpDictionaries.loadDomains(defer.resolve, defer.reject);
-                    return defer.promise;
-                },
-                islogged: function($location, auth) {
-                    if (!auth.isAuth()) {
-                        return auth.logout();
-                    }
-                }
-            }
-        })
-
-
-        /*
-         * Paths to create a new application
-         */
-        .state('layout.ep.newApp', {
-            url: '/:expId/new-application',
-            views: {
-                'content@layout.ep': {
-                    templateUrl: 'app/components/ep_new-application/newApp.html',
-                    controller: 'EpNewApplicationController',
-                    controllerAs: 'vm',
-                    resolve: {
-                        loadAppTypes: function($q, EpDictionaries, $rootScope) {
-                            var defer = $q.defer();
-                            defer.promise.then(function() {
-                                return;
-                            }, function() {
-                                return $rootScope.$emit('appTypesFail', '');
-                            });
-                            EpDictionaries.loadAppTypes(defer.resolve, defer.reject);
+            })
+            .state('layout.newAsset', {
+                url: '/:expId/new-asset',
+                views: {
+                    'content@layout': {
+                        templateUrl: 'app/components/edit-device/newDevice.html',
+                        controller: 'NewDeviceController',
+                        controllerAs: 'vm',
+                        resolve: {
+                            loadExpInfo: function($q, ExpInfo, $stateParams) {
+                                var defer = $q.defer();
+                                ExpInfo.loadExp($stateParams.expId,
+                                    function() {
+                                        defer.resolve({ success: true });
+                                    },
+                                    function() { defer.resolve({ success: false }); }
+                                );
                             return defer.promise;
-                        },
-                        islogged: function($location, auth) {
-                            if (!auth.isAuth()) {
-                                return auth.logout();
+                            },
+                            islogged: function($location, auth) {
+                                if (!auth.isAuth()) {
+                                    return auth.logout();
+                                }
                             }
                         }
                     }
                 }
-            }
-        })
-
-        .state('layout.ep.newApp.sePlugins', {
-            url: '/:expId/new-application/sePlugins',
-            views: {
-                'content@layout.ep': {
-                    templateUrl: 'app/components/ep_editSePlugins/seEditPlugins.html',
-                    controller: 'SeEditPluginsController',
-                    controllerAs: 'vm',
-                    resolve: {
-                        loadPlugins: function($q, EpDictionaries, $rootScope) {
-                            var defer = $q.defer();
-                            defer.promise.then(function() {
-                                return;
-                            }, function() {
-                                $rootScope.$emit('sePluginsLoadFail', '');
-                                return;
-                            });
-                            EpDictionaries.loadSePlugins(defer.resolve, defer.reject);
-                            return defer.promise;
-                        },
-                        islogged: function($location, auth) {
-                            if (!auth.isAuth()) {
-                                return auth.logout();
+            })
+            .state('layout.editAssets', {
+                url: '/:expId/editAsset',
+                views: {
+                    'content@layout': {
+                        templateUrl: 'app/components/edit-assets/editAssets.html',
+                        controller: 'EditAssetsController',
+                        controllerAs: 'vm',
+                        resolve: {
+                            islogged: function($location, auth) {
+                                if (!auth.isAuth()) {
+                                    return auth.logout();
+                                }
                             }
                         }
                     }
                 }
-            }
-        })
-
-
-
-        /**
-         * Application edition
-         */
-        .state('layout.ep.appEdition', {
-            abstract: true,
-            url: '',
-        })
-
-        .state('layout.ep.appEdition.sePlugins', {
-            url: '/:expId/app-edition/:appId/sePlugins',
-            views: {
-                'content@layout.ep': {
-                    templateUrl: 'app/components/ep_editSePlugins/seEditPlugins.html',
-                    controller: 'SeModifyPluginsController',
-                    controllerAs: 'vm',
-                    resolve: {
-                        loadPlugins: function($q, EpDictionaries, $rootScope) {
-                            var defer = $q.defer();
-                            defer.promise.then(function() {
-                                return;
-                            }, function() {
-                                $rootScope.$emit('sePluginsLoadFail', '');
-                                return;
-                            });
-                            EpDictionaries.loadSePlugins(defer.resolve, defer.reject);
-                            return defer.promise;
-                        },
-                        islogged: function($location, auth) {
-                            if (!auth.isAuth()) {
-                                return auth.logout();
-                            }
-                        }
-                    }
-                }
-            }
-        })
-
-        /*
-         * Paths to create a new asset
-         */
-
-        .state('layout.ep.newAsset', {
-            url: '/:expId/new-asset',
-            views: {
-                'content@layout.ep': {
-                    templateUrl: 'app/components/ep_newDev/epNewDevice.html',
-                    controller: 'EpNewDeviceController',
-                    controllerAs: 'vm',
-                    resolve: {
-                        loadAssetsInfo: function($q, EpDictionaries, $rootScope) {
-                            var defer = $q.defer();
-                            defer.promise.then(function() {}, function() {
-                                $rootScope.$emit('assetDictsFail', '');
-                            });
-                            EpDictionaries.loadAssetDict(defer.resolve, defer.reject);
-                            return defer.promise;
-                        },
-                        islogged: function($location, auth) {
-                            if (!auth.isAuth()) {
-                                return auth.logout();
-                            }
-                        }
-                    }
-                }
-            }
-        })
-
-
-        /*
-        -- Callback --
-        It saves token from accounts organicity
-        */
-        .state('callback', {
-            url: '/',
-            authenticate: false,
-            resolve: {
-                callback: function($location, $state, auth, $rootScope) {
-                    auth.callback();
-                }
-            }
-        })
+            });
 
         /* Default state */
         $urlRouterProvider.otherwise('/welcome');
@@ -517,10 +496,9 @@
             requireBase: false
         }).hashPrefix('!');
 
-        //RestangularProvider.setBaseUrl('http://localhost:8081');
+        RestangularProvider.setBaseUrl('http://localhost:8081');
         //RestangularProvider.setBaseUrl('https://localhost:8443');
-        RestangularProvider.setBaseUrl('https://experimenters.organicity.eu:8443');
-
+        //RestangularProvider.setBaseUrl('https://experimenters.organicity.eu:8443');
 
         /* Remove angular leaflet logs */
         $logProvider.debugEnabled(false);

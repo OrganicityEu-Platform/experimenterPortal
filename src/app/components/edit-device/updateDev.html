@@ -1,0 +1,21 @@
+
+<md-dialog aria-label="Asset Edition">
+<md-progress-circular ng-show="vm.loadingChart" class="md-hue-3 chart_spinner" md-mode="indeterminate"></md-progress-circular>   
+    <md-dialog-content style="height: 80vh; width: 70vw;">
+    <div class="jsonView">
+    	<json child="asset" default-collapsed="false" type="object"></json>
+	</div>
+        <div>
+    <textarea style="width:98%; height:320px" id="jsonTextarea" ng-model="assetString"></textarea>
+    <span class="red" ng-if="!wellFormed"><strong>Error!</strong> JSON is ill-formed <br></span>
+    <span class="red" ng-if="!isTypeRight"><strong>Error!</strong> The type is not correct ({{vm.assetTypePrefix}})<br></span>
+    <span class="red" ng-if="!isIdRight"><strong>Error!</strong> The ID is not correct ({{vm.assetIdPrefix}}) <br></span>
+    <span class="red" ng-if="!hasAttributes"><strong>Error!</strong> The asset does not have any attribute<br></span>
+	</div>
+       
+    </md-dialog-content>
+    <md-dialog-actions layout="row">
+      	<md-button style="float:left" class="md-flat md-primary" ng-click="cancel()"> < Go back </md-button>
+		<md-button ng-disabled="!(wellFormed && isTypeRight && isIdRight && hasAttributes)" style="float:right" class="md-flat md-primary" ng-click="update()"> Update ></md-button>
+    </md-dialog-actions>
+</md-dialog>

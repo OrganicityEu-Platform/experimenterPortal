@@ -1,0 +1,38 @@
+<md-progress-circular ng-show="vm.loadingChart" class="md-hue-3 chart_spinner" md-mode="indeterminate"></md-progress-circular>
+
+<nav class="navTags">
+    <a href='#' ng-click="vm.goHome()" style="color:#EF4070; transform: translateY(6px);" class="material-icons" >home</a>  >
+    <a href='#' style="color:#EF4070;" ng-click="vm.goExp()">{{vm.experimentInfo.name}}</a> > 
+    <a href='#' style="color:#EF4070;" ng-click="vm.goAssets()">Assets</a>
+</nav>
+<hr/>
+<br>
+<div layout="row">
+<h4>Create a new asset </h4> 
+  <i class="material-icons" style="color:blue;cursor:pointer; margin-top:10px;margin-left:20px" ng-click="vm.showInfoMain()">info</i>
+    </div>
+    <div ng-show="vm.infoMain" class="alert alert-info fade in">
+                    <a  href="#" class="close" data-dismiss="alert">&times;</a>
+                <strong>Info!</strong> Create an asset for your experiment. You can find more about assets 
+                <a href="" ng-click="vm.callHref('https://organicityeu.github.io/AssetDataModel/')">here</a>
+                <br>
+                Note that the time instant attribute is added internally, you do not need to define it!
+                <br>
+                Forbiden characters: <strong><  >  "  '  =  ;  (  )  ' '</strong>
+        </div>
+<div class="jsonView">
+    <json child="vm.asset" default-collapsed="false" type="object"></json>
+</div>
+<hr>
+<div>
+    <textarea style="width:98%; height:320px" id="jsonTextarea" ng-model="vm.assetString"></textarea>
+    <span class="red" ng-if="!vm.wellFormed"><strong>Error!</strong> JSON is ill-formed <br></span>
+    <span class="red" ng-if="!vm.isTypeRight"><strong>Error!</strong> The type is not correct ({{vm.assetTypePrefix}})<br></span>
+    <span class="red" ng-if="!vm.isIdRight"><strong>Error!</strong> The ID is not correct ({{vm.assetIdPrefix}}) <br></span>
+    <span class="red" ng-if="!vm.hasAttributes"><strong>Error!</strong> The asset does not have any attribute<br></span>
+</div>
+<br>
+<br>
+<md-button style="float:left" class="md-flat md-primary" ng-click="vm.goAssets()"> < Go back </md-button>
+<md-button ng-disabled="!(vm.wellFormed && vm.isTypeRight && vm.isIdRight && vm.hasAttributes)" style="float:right" class="md-flat md-primary" ng-click="vm.create()"> Create ></md-button>
+

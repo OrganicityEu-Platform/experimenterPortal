@@ -1,0 +1,184 @@
+<md-progress-circular ng-show="vm.loadingChart" class="md-hue-3 chart_spinner" md-mode="indeterminate"></md-progress-circular>
+
+<nav class="navTags">
+    <a href='#' ng-click="vm.goHome()" style="color:#EF4070; transform: translateY(6px);" class="material-icons" >home</a>
+</nav>
+<hr/>
+
+<br>
+    <div>
+        <label class="ep_pLabel">Main Experimenter ID (Experiment Ownwer): </label>
+        <label class="ep_bLabel"> {{vm.mainExperimenterId}} </label>
+    </div>
+
+    <div>
+        <label class="ep_pLabel">Current Experimenter ID: </label>
+        <label class="ep_bLabel"> {{vm.currentExperimenterId}} </label>
+    </div>
+
+    <div>
+        <label class="ep_pLabel">Experiment ID: </label>
+        <label class="ep_bLabel"> {{vm.experimentInfo.experimentId}} </label>
+    </div>
+<br>
+<br>
+<form name="vm.expForm" >
+        <md-input-container class="md-block">
+            <label>Name (required)</label>
+            <input name="name" ng-model="vm.currentInfo.name" ng-required="true"/>
+        </md-input-container>
+        <md-input-container class="md-block">
+            <label>Description (required)</label>
+            <textarea ng-trim="true" name="description" required ng-model="vm.currentInfo.description"></textarea>
+        </md-input-container>
+        <div layout="row">
+        <md-checkbox ng-model="vm.currentInfo.assetsPublic" aria-label="Are Experiment Assets Public?">
+            I want to share my assets
+        </md-checkbox>
+        <i class="material-icons" style="color:blue;cursor:pointer;margin-top:10px; margin-left: 20px; transform: translateY(-12px);" ng-click="vm.showInfoAssets()">info</i>
+        </div>
+        <div ng-show="vm.infoAssets" class="alert alert-info fade in">
+                    <a  href="#" class="close" data-dismiss="alert">&times;</a>
+                <strong>Info!</strong> By selecting this option the assets created by this experiment will be visible for everyone,
+                otherwise only this experiment, and their applications, will be allowed to use them.
+        </div> 
+</form>
+<br>
+<br>
+<md-button class="md-flat md-primary" ng-disabled="vm.expForm.$pristine" ng-click="vm.reset()" style="float:left"> Reset </md-button>
+<md-button class="md-flat md-primary" ng-disabled="vm.expForm.$invalid || vm.expForm.$pristine" ng-click="vm.UpdateExperiment()" style="float:right"> Update </md-button>
+
+<br>
+<br>
+<br>
+<br>
+<div class="panel-group" id="faqAccordion">
+        <div class="panel panel-default ">
+            <div class="panel-heading accordion-toggle question-toggle collapsed" data-toggle="collapse" data-parent="#faqAccordion" data-target="#pan3">
+              <h4 class="panel-title">
+              <md-icon md-svg-src="./assets/ep/credential.svg"></md-icon>
+                    <a href="#" class="ing"> Experiment credentials</a>
+              </h4>
+
+            </div>
+            <div id="pan3" class="panel-collapse collapse" style="height: 0px;">
+                <div class="panel-body">
+                    <p>
+                    Here you can find the information of the experiment that you will need to interact with <a href="#" ng-click="vm.callHref('http://organicity.eu/')" style="color:#EE416F">Organicity </a> from your applications and software. You developers can find detailed information about how to use these credentials <a href="#" ng-click="vm.callHref('https://organicityeu.github.io/HowToAuthenticateAnUser/')" > here </a>. 
+                    </p>
+                    <md-button style="float:left; margin-right:20px" class="md-flat md-secondary" ng-click="vm.gotoCredentials()"> Go To Credentials </md-button>
+                </div>
+            </div>
+        </div>
+        <div class="panel panel-default ">
+            <div class="panel-heading accordion-toggle collapsed question-toggle" data-toggle="collapse" data-parent="#faqAccordion" data-target="#pan6">
+                 <h4 class="panel-title">
+                 <md-icon md-svg-src="./assets/ep/apps.svg "></md-icon>
+                <a href="#" class="ing">Applications</a>
+              </h4>
+
+            </div>
+            <div id="pan6" class="panel-collapse collapse" style="height: 0px;">
+                <div class="panel-body">
+                    <p>
+                    Application are the parts of the experiment that users enjoy. In <a href="#" ng-click="vm.callHref('http://organicity.eu/')" style="color:#EE416F">Organicity </a>, one experiment can have several application so that you can differentiate which one is creating or consuming your experiment data. Here you can define your applications and obtain the information necessary for them to interact with the platform. In the assets tab you will find how to use the information of your applications.
+                    </p>
+                    <div class="alert alert-warning">
+                        <strong>Disclaimer!</strong> The meaning of application here is not the software, but an <a href="#" ng-click="vm.callHref('http://organicity.eu/')" style="color:#EE416F">Organicity </a> entity with an identifier. You will never be required to upload the code of your application.
+                    </div>
+                    <md-button style="float:left" class="md-flat  md-secondary" ng-click="vm.gotoApps()"> Go To Applications</md-button>
+                </div>
+            </div>
+        </div>
+        <div class="panel panel-default ">
+            <div class="panel-heading accordion-toggle question-toggle collapsed" data-toggle="collapse" data-parent="#faqAccordion" data-target="#pan5">
+              <h4 class="panel-title">
+              <md-icon md-svg-src="./assets/ep/assets.svg"></md-icon>
+                    <a href="#" class="ing"> Assets</a>
+              </h4>
+
+            </div>
+            <div id="pan5" class="panel-collapse collapse" style="height: 0px;">
+                <div class="panel-body">
+                    <p>
+                    Create information for your experiment. From you will be able to create data assets for your experiment in a graphical way and you will get familiar with its structure and sintaxis. While it is a good starting point, it is not you but your application that will create the assets. Once you know how your assets looks like, <a href="#" ng-click="vm.callHref('https://organicityeu.github.io/HowToPushAnAssetToTheExperimenterSite/')" >here </a> you will find how to create assets from your software.
+                    </p>
+                    <md-button style="float:left" class="md-flat  md-secondary" ng-click="vm.gotoAssets()"> Go To Assets</md-button>
+                </div>
+            </div>
+        </div>
+        <div class="panel panel-default ">
+            <div class="panel-heading accordion-toggle question-toggle collapsed" data-toggle="collapse" data-parent="#faqAccordion" data-target="#pan2">
+              <h4 class="panel-title">
+              <md-icon md-svg-src="./assets/ep/tag.svg"></md-icon>
+                    <a href="#" class="ing"> Annotations</a>
+              </h4>
+            </div>
+            <div id="pan2" class="panel-collapse collapse" style="height: 0px;">
+                <div class="panel-body">
+                    <p>
+                    Help people to enrich your information. Here you can define tags for your data assets, that will be displayed in the <a href="#" ng-click="vm.callHref('https://observatory.organicity.eu')"> Urban Data Observatory</a> so that people can select the ones that better fit the actual information. 
+
+                    Tags are grouped in tag-domains, and only one tag of each domain can be selected. Here you will find a default domain for your experiment in which you can add tags. Besides, you can create more domains or select from <a href="#" ng-click="vm.callHref('http://organicity.eu/')" style="color:#EE416F">Organicity </a> default domains.
+                    </p>
+                    <md-button style="float:left; margin-right:20px" class="md-flat md-secondary" ng-click="vm.gotoTags()"> Go To Annotations </md-button>
+                </div>
+            </div>
+        </div>        
+        <div class="panel panel-default ">
+            <div class="panel-heading accordion-toggle question-toggle collapsed" data-toggle="collapse" data-parent="#faqAccordion" data-target="#pan1">
+              <h4 class="panel-title">
+              <md-icon md-svg-src="./assets/ep/map.svg"></md-icon>
+                    <a href="#" class="ing"> Area</a>
+              </h4>
+            </div>
+            <div id="pan1" class="panel-collapse collapse" style="height: 0px;">
+                <div class="panel-body">
+                    <p>
+                        Define the are of your experiment. By doing so ypu can limit the activity of the application of your experiment to those places yopu are interested in.
+                        From the <a href="#" ng-click="vm.callHref('http://organicity.eu/')" style="color:#EE416F">Organicity </a> perspective, this option is necessary to work with <a href="#" ng-click="vm.callHref('https://set.organicity.eu/')">
+                                    Smartphone Experimentation </a> tool.
+                    </p>
+                    <md-button style="float:left" class="md-flat md-secondary" ng-click="vm.gotoArea()"> Go To Area </md-button>
+                </div>
+            </div>
+        </div>
+        <div class="panel panel-default ">
+            <div class="panel-heading accordion-toggle question-toggle collapsed" data-toggle="collapse" data-parent="#faqAccordion" data-target="#pan4">
+              <h4 class="panel-title">
+              <md-icon md-svg-src="./assets/ep/team.svg"></md-icon>
+                    <a href="#" class="ing"> Experiment team</a>
+              </h4>
+
+            </div>
+            <div id="pan4" class="panel-collapse collapse" style="height: 0px;">
+                <div class="panel-body">
+                    <p>
+                    You do not need to work alone. Here you can invite other experiments to this experiment so that they will see all the experiment information.
+                    </p>
+                    <div class="alert alert-danger">
+                        <strong>Alert!</strong> Note that invited experimenters will see sensible information of your experiment (identifiers, experiment_secret, created information, etc.). Be sure that you really want to share this information.
+                    </div>
+                    <md-button style="float:left" class="md-flat  md-secondary" ng-click="vm.gotoTeam()"> Go To Team </md-button>
+                </div>
+            </div>
+        </div>        
+        <div class="panel panel-default ">
+            <div class="panel-heading accordion-toggle collapsed question-toggle" data-toggle="collapse" data-parent="#faqAccordion" data-target="#pan7">
+                 <h4 class="panel-title">
+                  <md-icon md-svg-src="./assets/ep/community.svg "></md-icon>
+                    <a href="#" class="ing">Participants</a>
+              </h4>
+
+            </div>
+            <div id="pan7" class="panel-collapse collapse" style="height: 0px;">
+                <div class="panel-body">
+                    <p style="color:red">
+                    Comming soon!
+                    </p>
+                    <md-button style="float:left" class="md-flat  md-secondary" ng-disabled="true" ng-click="vm.gotoParticipants()"> Go To Participants</md-button>
+                </div>
+            </div>
+        </div>
+    </div>
+

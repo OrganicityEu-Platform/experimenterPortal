@@ -23,21 +23,20 @@
         $scope.slidePosition = 0;
         $scope.slideSize = 20;
 
-        this.getTimesSlided = function() {
+        getTimesSlided = function() {
           return $scope.slideSize;
         };
-        this.getPosition = function() {
+        getPosition = function() {
           return $scope.slidePosition * $scope.slideSize;
         };
-        this.decrementPosition = function() {
+        decrementPosition = function() {
           $scope.slidePosition -= 1;
         };
-        this.incrementPosition = function() {
+        incrementPosition = function() {
           $scope.slidePosition += 1;
         };
-        this.scrollIsValid = function(direction) {
+        scrollIsValid = function(direction) {
           var scrollPosition = $scope.element.scrollLeft();
-          console.log('scrollpos', scrollPosition);
           if(direction === 'left') {
             return scrollPosition > 0 && $scope.slidePosition >= 0;
           } else if(direction === 'right') {
@@ -67,11 +66,9 @@
           if(slideMenuCtrl.scrollIsValid('left') && attr.direction === 'left') {
             slideMenuCtrl.decrementPosition();                       
             sensorsContainer.scrollLeft(slideMenuCtrl.getPosition());
-            console.log(slideMenuCtrl.getPosition());  
           } else if(slideMenuCtrl.scrollIsValid('right') && attr.direction === 'right') {
             slideMenuCtrl.incrementPosition(); 
             sensorsContainer.scrollLeft(slideMenuCtrl.getPosition()); 
-            console.log(slideMenuCtrl.getPosition()); 
           }          
         });
       }

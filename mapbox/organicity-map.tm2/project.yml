@@ -1,0 +1,31 @@
+_prefs: 
+  mapid: tomasdiez.ed7899f5
+  saveCenter: true
+_properties: 
+  bridge: 
+    "group-by": layer
+attribution: "<a href='https://www.mapbox.com/about/maps/' target='_blank'>&copy; Mapbox &copy; OpenStreetMap</a> <a class='mapbox-improve-map' href='https://www.mapbox.com/map-feedback/' target='_blank'>Improve this map</a>"
+bounds: 
+  - -180
+  - -85.0511
+  - 180
+  - 85.0511
+center: 
+  - -0.813
+  - 41.3273
+  - 6
+description: ''
+format: "png8:m=h"
+interactivity_layer: ''
+layers: null
+maxzoom: 22
+minzoom: 0
+name: Organicity-new
+source: "mapbox:///mapbox.mapbox-streets-v5"
+styles: 
+  - style.mss
+  - label.mss
+  - road.mss
+  - vars.mss
+  - bg.mss
+template: ''

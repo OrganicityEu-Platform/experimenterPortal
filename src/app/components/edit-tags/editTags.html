@@ -1,0 +1,210 @@
+<md-progress-circular ng-show="vm.loadingChart" class="md-hue-3 chart_spinner" md-mode="indeterminate"></md-progress-circular>
+<nav class="navTags">
+    <a href='#' ng-click="vm.goHome()" style="color:#EF4070; transform: translateY(6px);" class="material-icons" >home</a>  >
+    <a href='#' style="color:#EF4070;" ng-click="vm.goExp()">{{vm.experimentInfo.name}}</a>
+</nav>
+<hr/>
+<div layout="row">
+    <h4>Experiment tags </h4> 
+    <i class="material-icons" style="color:blue;cursor:pointer; margin-top:10px;margin-left:20px" ng-click="vm.showStartInfo()">info</i>
+</div>
+
+<div ng-show="!vm.hasAnnotationExperiment">
+<label >
+    Your experiment was not registered in the annotation system. In case you need annotate your assets, contact us <a href="" ng-click="vm.callHref()">here</a>
+</label>
+<br>
+<br>
+<md-button style="float:left" class="md-flat md-primary" ng-click="vm.back()"> Go back to experiment </md-button>
+</div>
+
+<div class="panel-group" id="faqAccordion" ng-if="vm.hasAnnotationExperiment">
+    <div class="panel panel-default ">
+            <div class="panel-heading accordion-toggle question-toggle collapsed" data-toggle="collapse" data-parent="#faqAccordion" data-target="#pan1">
+              <h4 class="panel-title"> <a href="#" class="ing"> Experiment specific domains </a> </h4>
+            </div>
+            <div id="pan1" class="panel-collapse collapse" style="height: 0px;">
+                <div class="panel-body">
+                    <div div ng-show="!vm.inNewDomain" ng-repeat="domain in vm.experimentDomains">
+        <label class="ep_pLabel">{{domain.urn}}</label>
+        <div layout="row">
+            <tags-input placeholder="Your experiment tags" style="width:80%" on-tag-added="domain.isChanged = true;" on-tag-removed="domain.isChanged = true;" ng-model="domain.tags"></tags-input>
+            <md-button style="height: 35px; margin: 5px 0 0 20px" class="md-flat md-primary" ng-show="domain.isChanged" ng-click="vm.updateTags($index)">Update Tags</md-button>
+        </div>
+        <br>
+    </div>
+    <div>
+        <md-button style="float:left; width:25%" ng-show="!vm.inNewDomain" class="md-flat  md-secondary" ng-click="vm.inNewDomain=true"> Create Domain </md-button>
+        <div ng-show="vm.inNewDomain">
+            <label class="ep_bLabel">New Domain</label>
+            <br>
+            <label class="ep_pLabel">{{vm.prefix+":"+vm.newDomain.urn}} </label>
+            <form name="vm.newDomainForm" novalidate style="width:80%">
+                <md-input-container class="md-block">
+                    <label>Domain Suffix</label>
+                    <input type="text" name="suffix" required ng-model="vm.newDomain.urn">
+                    <div ng-messages="!vm.newDomainForm.suffix.$pristine && vm.newDomainForm.suffix.$error">
+                        <div ng-message="required">Domain suffix is required</div>
+                    </div>
+                </md-input-container>
+                <tags-input placeholder="Domains tags" style="width:100%" ng-model="vm.newDomain.tags"></tags-input>
+                <br>
+                <md-button style="float:left" class="md-flat md-primary" ng-click="vm.addDomainCancel()"> Cancel </md-button>
+                <md-button style="float:right" class="md-flat md-primary" ng-disabled="vm.newDomainForm.suffix.$pristine" ng-click="vm.createDomain()" style="float:left"> Add Domain</md-button>
+            </form>
+        </div>
+    </div>
+
+                </div>
+            </div>
+    </div>
+        <div class="panel panel-default ">
+            <div class="panel-heading accordion-toggle collapsed question-toggle" data-toggle="collapse" data-parent="#faqAccordion" data-target="#pan2">
+                 <h4 class="panel-title"> <a href="#" class="ing">Organicity suggested domains</a> </h4>
+            </div>
+            <div id="pan2" class="panel-collapse collapse" style="height: 0px;">
+                <div class="panel-body">
+
+                <p> You can select <a href="#" ng-click="vm.callHref('http://organicity.eu/')" style="color:#EE416F">Organicity </a> tag domains. Select generic domains under <b>Predefined tag domains</b> by expanding it and clicking <b>Select</b>. You can also unselect tag domains from <b>Selected tag domains</b> by expanding them and clicking <b>Unselect</b></p>
+            <h4>Selected tag domains</h4>    
+                    <uib-accordion close-others="true">
+        <div uib-accordion-group ng-repeat="domain in vm.selectedDomains" heading="{{domain.urn}}" >
+            {{domain.description}}
+                <br><br>
+                <tag-list ng-model="domain.tags" key="name"> </tag-list>
+                <md-button class="md-flat md-primary" ng-click="vm.selectedDomainClick($index)($index)" >Unselect</md-button>
+        </div>
+    </uib-accordion>
+    <br>
+    <h4>Predefined tag domains</h4>
+    <uib-accordion close-others="true">
+        <div uib-accordion-group ng-repeat="domain in vm.allDomains" heading="{{domain.urn}}" >
+            {{domain.description}}
+                <br><br>
+                <tag-list ng-model="domain.tags" key="name"> </tag-list>
+                <md-button class="md-flat md-primary" ng-click="vm.domainClick($index)" >Select</md-button>
+        </div>
+    </uib-accordion>
+                </div>
+            </div>
+        </div>
+</div>        
+
+<div >
+    
+<!--     <br>
+    <br>
+    <h5>Domains selected for your experiment</h5>
+    <uib-accordion close-others="true">
+        <div uib-accordion-group class="panel-default" ng-repeat="domain in vm.selectedDomains" heading="{{domain.urn}}" >
+            {{domain.description}}
+                <br><br>
+                <tag-list ng-model="domain.tags" key="name"> </tag-list>
+                <md-button class="md-flat md-primary" ng-click="vm.selectedDomainClick($index)($index)" >Unselect</md-button>
+        </div>
+    </uib-accordion>
+
+    <h5>Available tag domains</h5>
+    <uib-accordion close-others="true">
+        <div uib-accordion-group class="panel-default" ng-repeat="domain in vm.allDomains" heading="{{domain.urn}}" >
+            {{domain.description}}
+                <br><br>
+                <tag-list ng-model="domain.tags" key="name"> </tag-list>
+                <md-button class="md-flat md-primary" ng-click="vm.domainClick($index)" >Select</md-button>
+        </div>
+    </uib-accordion> -->
+
+  <!--   <h2 class="ep_bBoldLabel">Tags of your experiment </h2>
+    <br>
+    <div div ng-show="!vm.inNewDomain" ng-repeat="domain in vm.experimentDomains">
+        <label class="ep_pLabel">{{domain.urn}}</label>
+        <div layout="row">
+            <tags-input placeholder="Your experiment tags" style="width:80%" on-tag-added="domain.isChanged = true;" on-tag-removed="domain.isChanged = true;" ng-model="domain.tags"></tags-input>
+            <md-button style="height: 35px; margin: 5px 0 0 20px" class="md-flat md-primary" ng-show="domain.isChanged" ng-click="vm.updateTags($index)">Update Tags</md-button>
+        </div>
+        <br>
+    </div>
+    <div>
+        <md-button style="float:left; width:25%" ng-show="!vm.inNewDomain" class="md-flat  md-secondary" ng-click="vm.inNewDomain=true"> Create Domain </md-button>
+        <div ng-show="vm.inNewDomain">
+            <label class="ep_bLabel">New Domain</label>
+            <br>
+            <label class="ep_pLabel">{{vm.prefix+":"+vm.newDomain.urn}} </label>
+            <form name="vm.newDomainForm" novalidate style="width:80%">
+                <md-input-container class="md-block">
+                    <label>Domain Suffix</label>
+                    <input type="text" name="suffix" required ng-model="vm.newDomain.urn">
+                    <div ng-messages="!vm.newDomainForm.suffix.$pristine && vm.newDomainForm.suffix.$error">
+                        <div ng-message="required">Domain suffix is required</div>
+                    </div>
+                </md-input-container>
+                <tags-input placeholder="Domains tags" style="width:100%" ng-model="vm.newDomain.tags"></tags-input>
+                <br>
+                <md-button style="float:left" class="md-flat md-primary" ng-click="vm.addDomainCancel()"> Cancel </md-button>
+                <md-button style="float:right" class="md-flat md-primary" ng-disabled="vm.newDomainForm.suffix.$pristine" ng-click="vm.createDomain()" style="float:left"> Add Domain</md-button>
+            </form>
+        </div>
+    </div>
+    <br>
+    <br>
+    <div ng-show="!vm.inNewDomain">
+        <h3 class="ep_bBoldLabel">Organicity tags </h3>
+        <div class="accordion">
+            <header class="box">
+                <label class="box-title">Available tag domains</label>
+            </header>
+            <div ng-repeat="domain in vm.allDomains">
+                <input type="radio" name="accordion" id="domain-{{$index}}" />
+                <section class="box">
+                    <label class="box-title" ng-click="vm.openAll($index)" for="domain-{{$index}}">{{domain.urn}}</label>
+                    <i class="material-icons" ng-show="!vm.isOpenAll($index)">keyboard_arrow_right</i>
+                    <i class="material-icons" ng-show="vm.isOpenAll($index)">keyboard_arrow_down</i>
+                    <label class="box-close" ng-click="vm.openAll($index)" for="acc-close"></label>
+                    <div class="box-content  tags-sel" style="cursor:default">
+                        <br> {{domain.description}}
+                        <br>
+                        <br>
+                        <tag-list ng-model="domain.tags" key="name"> </tag-list>
+                        <md-button class="md-flat" style="float:right;" ng-click="vm.domainClick($index)" layout="row">
+                            <label>Select</label>
+                        </md-button>
+                    </div>
+                </section>
+            </div>
+            <input type="radio" name="accordion" id="acc-close">
+        </div>
+        <br>
+        <br>
+        <div class="accordion">
+            <header class="box">
+                <label class="box-title">Selected tag domains</label>
+            </header>
+            <div ng-repeat="domain in vm.selectedDomains">
+                <input type="radio" name="accordion" id="selDomain-{{$index}}" />
+                <section class="box">
+                    <label class="box-title" ng-click="vm.openSel($index)" for="selDomain-{{$index}}">{{domain.urn}}</label>
+                    <i class="material-icons" ng-show="!vm.isOpenSel($index)">keyboard_arrow_right</i>
+                    <i class="material-icons" ng-show="vm.isOpenSel($index)">keyboard_arrow_down</i>
+                    <label class="box-close" ng-click="vm.openSel($index)" for="acc-close"></label>
+                    <div class="box-content  tags-sel" style="cursor:default">
+                        <br> {{domain.description}}
+                        <br>
+                        <tag-list ng-model="domain.tags" key="name"> </tag-list>
+                        <md-button class="md-flat" style="float:right;" ng-click="vm.selectedDomainClick($index)">
+                            <label>Unselect</label>
+                        </md-button>
+                    </div>
+                </section>
+            </div>
+            <input type="radio" name="accordion" id="acc-close">
+        </div>
+        <br>
+        <br>
+        <md-button style="float:left" class="md-flat md-secondary" ng-click="vm.updateDomains()"> Update selected domains </md-button>
+        <br>
+        <br>
+        <md-button style="float:left" class="md-flat md-primary" ng-click="vm.back()"> Go back to experiment </md-button> -->
+   <!--  </div>
+    <br>
+    <br> -->
+</div>

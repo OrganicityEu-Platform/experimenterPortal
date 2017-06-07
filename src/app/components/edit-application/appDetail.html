@@ -1,0 +1,82 @@
+<md-progress-circular ng-show="vm.loadingChart" class="md-hue-3 chart_spinner" md-mode="indeterminate"></md-progress-circular>
+
+<nav class="navTags">
+    <a href='#' ng-click="vm.goHome()" style="color:#EF4070; transform: translateY(6px);" class="material-icons" >home</a>  >
+    <a href='#' style="color:#EF4070;" ng-click="vm.goExp()">{{vm.experimentInfo.name}}</a> > 
+    <a href='#' style="color:#EF4070;" ng-click="vm.goApps()">Apps</a>
+</nav>
+<hr/>
+<br>
+
+    <div layout="column">
+    <span>
+    <label class="ep_pLabel">Experimenter ID: </label>
+    <label class="ep_bLabel"> {{vm.experimenterId}} </label>
+      </span>
+    <span>
+    <label class="ep_pLabel">Experiment ID: </label>
+    <label class="ep_bLabel"> {{vm.appInfo.experimentId}} </label>
+    </span>
+    <span>
+    <label class="ep_pLabel">Application ID: </label>
+    <label class="ep_bLabel"> {{vm.appInfo.applicationId}} </label>
+    <br>
+    <br>
+  </span>
+    <span>
+    <label class="ep_pBoldLabel">Application Type: </label>
+    <label class="ep_bBoldLabel"> {{vm.appInfo.type}} </label>
+    </span>
+    </div>
+    <br>
+    <form name="vm.epAppForm" novalidate>
+        <md-input-container class="md-block">
+            <label>AName</label>
+            <input ng-required="true" name="name" ng-model="vm.currentInfo.name">
+        </md-input-container>
+        <md-input-container class="md-block">
+            <label>Description</label>
+            <textarea ng-trim="true" name="description" ng-required="true" ng-model="vm.currentInfo.description"></textarea>
+        </md-input-container>
+        <md-input-container class="md-block">
+            <label>Application end-point</label>
+            <input type="url" ng-required="true" name="link" ng-model="vm.currentInfo.link">
+        </md-input-container>
+        
+        <!-- Special information for smartphone experimentation -->
+        <div ng-show="vm.isSe()">
+            <md-input-container class="md-block">
+                <label>URL Description</label>
+                <input type="url" name="urldescription" ng-model="vm.currentInfo.more.urlDescription"/>
+                <div ng-if="!vm.newAppForm.urldescription.$pristine" ng-messages="vm.newAppForm.urldescription.$error">
+                    <div ng-message="url">Not valid url</div>
+                </div>
+            </md-input-container>
+            <br>
+            <a ng-href="{{vm.resultsLink}}" class="ep_pLabel">Application results</a>
+            <br>
+            <a ng-href="{{vm.codeuploadLink}}" class="ep_pLabel">Upload a new Application Jar</a>
+            <br>
+            <a ng-href="{{vm.sensorjarUpload}}" class="ep_pLabel">Upload a new Sensor Plugin</a>
+            <br>
+            <a ng-href="{{vm.pluginsSelection}}" class="ep_pLabel">Edit User Sensor Plugins</a>
+            <div>
+                <br>
+                <label class="ep_bBoldLabel">Smartphone experiment plugins</label>
+                <br>
+                <label style="margin-left:20px;" ng-repeat="plugin in vm.plugins">{{plugin}}</label>
+            </div>
+            <br>
+            <br>
+            <md-button class="md-flat md-secondary" ng-click="vm.updatePlugins() "> Change Used Sensor Pluging </md-button>
+        </div>
+    </form>
+    <br>
+    <br>
+    <span style="width:100%">
+    <md-button style="float:right" class="md-flat md-primary" ng-disabled="(vm.epAppForm.$pristine &&
+    !vm.pluginsModified())"
+   ng-click="vm.update() "> Update </md-button>
+    <md-button style="float:left" class="md-flat md-primary" ng-disabled="(vm.epAppForm.$pristine &&
+    !vm.pluginsModified())" ng-click="vm.reset() " > Reset </md-button>
+    </span>
